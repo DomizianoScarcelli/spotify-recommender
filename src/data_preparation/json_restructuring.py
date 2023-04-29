@@ -29,7 +29,7 @@ def create_zip_archive(folder_path, archive_path):
                 file_path = os.path.join(root, file)
                 zip_file.write(file_path, os.path.relpath(file_path, folder_path))
 
-folder_path = "./new_jsons"
-destination_path = "./pyspark_friendly_spotify_playlist_dataset_nomacos.zip"
+folder_path = "../../json_zip_test"
+destination_path = "./json_zip_test.zip"
 
 create_zip_archive(folder_path, destination_path)
