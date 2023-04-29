@@ -11,12 +11,19 @@ DATA_PATH = "/Users/dov/Desktop/spotify_million_playlist_dataset/data"
 SAVE_PATH = "/Users/dov/Desktop/spotify_million_playlist_dataset/saved"
 
 def get_track_audio_feature(track_id):
+    """
+    Gets the audio features of a single track
+    """
     URL = f"https://api.spotify.com/v1/audio-features/{track_id}"
     header = {'Authorization': 'Bearer ' + AUTH_TOKEN}
     res = requests.get(URL, headers=header)
     return res.json()
 
 def get_tracks_audio_feature(tracks_ids):
+    """
+    Gets the audio features of a multiple tracks
+    """
+
     URL = f"https://api.spotify.com/v1/audio-features"
     header = {'Authorization': 'Bearer ' + AUTH_TOKEN}
     payload = {'ids': tracks_ids}
@@ -24,6 +31,9 @@ def get_tracks_audio_feature(tracks_ids):
     return res.status_code, res.json()
 
 def get_tracks_id(path, save_path):
+    """
+    Retrieves the tracks id from the jsons files that describe the playlists, and saves them in a file
+    """
     result = set()
     file_count = sum(len(files) for _, _, files in os.walk(path))  # Get the number of files
     with tqdm(total=file_count) as pbar:
@@ -42,6 +52,9 @@ def get_tracks_id(path, save_path):
     return result
 
 def extract_N_groups(N = 100):
+    """
+    Creates lists of N in order to group songs in batches, and saves them into a new file
+    """
     with open(os.path.join(SAVE_PATH, "all_songs.csv"), "r") as songs:
         tracks_ids = songs.read()
     track_list = tracks_ids.split(",")
@@ -55,6 +68,9 @@ def extract_N_groups(N = 100):
     return N_group_tracks
 
 def batch_track_list_feature_extraction(N_group_tracks, group_range):
+    """
+    Given a certain group range, it calls the api for all these song groups in order to extract the audio features
+    """
     N_group_tracks = [N_group_tracks[i] for i in group_range]
     result = dict()
     for index, track_group in enumerate(tqdm(N_group_tracks)):
@@ -66,6 +82,9 @@ def batch_track_list_feature_extraction(N_group_tracks, group_range):
     return result
 
 def create_tracks_feature_json(step_size=1000):
+    """
+    It execte the batch_track_list_feature_extraction for all the extracted songs, in batches in order to have partial results in case of failures
+    """
 
     def execute_step(group_range):
         try:
@@ -97,6 +116,9 @@ def create_tracks_feature_json(step_size=1000):
            
 
 def unify_tracks_features_files(path):
+    """
+    Unifies all the track_features.json into a single one
+    """
     result = dict()
     for root, dirs, files in os.walk(path):
         for file in files:
@@ -117,6 +139,9 @@ def unify_tracks_features_files(path):
     return result
 
 def test_same_number_of_songs():
+    """
+    Test if the number of song in the all_track_features.json is equal to the number of unique songs in the playlists
+    """
     with open(os.path.join(SAVE_PATH, "all_tracks_features.json"), "r") as f:
         result = json.load(f)
     with open(os.path.join(SAVE_PATH, "all_songs.csv"), "r") as f:
@@ -126,13 +151,4 @@ def test_same_number_of_songs():
     return abs(num_songs_in_features - num_all_songs)
 
 if __name__ == "__main__":
-    # json_path = "/Users/dov/Desktop/spotify_million_playlist_dataset/mpd.slice.0-999.json"
-    # with open(json_path, 'r') as f:
-    #     content = f.read()
-    # objects = ast.literal_eval(content)
-    # result = ""
-    # for object in objects:
-    #     result += str(object) + "\n"
-    # with open(os.path.join(SAVE_PATH, "top.json"), "w") as f:
-    #     f.write(result)
     pass
