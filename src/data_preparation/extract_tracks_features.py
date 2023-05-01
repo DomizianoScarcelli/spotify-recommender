@@ -4,6 +4,8 @@ from tqdm import tqdm, trange
 import requests
 import math
 import ast
+import pandas as pd
+import glob
 
 #TODO: this changes every hour, so build a funciton that fetches it
 AUTH_TOKEN = "BQCcqo23ViHg5jKJJYLtroSXuntLkbyJal3unKeReP8agVUlICZHyzdpiuupZSY3Glo9Oeov6d-4GF3Lmu9wkKUeaFK5fzDKO9sE0KcJx1yDb-QI1bsk"
@@ -115,40 +117,51 @@ def create_tracks_feature_json(step_size=1000):
             execute_step(group_range)
            
 
-def unify_tracks_features_files(path):
+def extract_only_audio_features(dir_path, saved_path):
     """
-    Unifies all the track_features.json into a single one
+    For each file, it only extracts the audio_features list in order to be read into a pyspark dataframe.
     """
-    result = dict()
-    for root, dirs, files in os.walk(path):
-        for file in files:
-            filename = os.path.join(root, file)
-            with open(filename, "r") as f:
-                content = json.load(f)
-            for i in content:
-                group = content[i]
-                tracks_features = group["audio_features"]
-                for feature in tracks_features:
-                    if feature is None:
-                        continue
-                    track_id = feature["id"]
-                    if track_id not in result:
-                        result[track_id] = feature
-    with open(os.path.join(SAVE_PATH, "all_tracks_features.json"), "w") as f:
-        json.dump(result, f)
-    return result
+    for filename in tqdm(os.listdir(dir_path)):
+        if filename.endswith('.json'):
+            with open(os.path.join(dir_path, filename), 'r') as f:
+                data = json.load(f)
+                audio_features_list = []
+                try:
+                    i = 0
+                    while data[str(i)]:
+                        audio_features_list.extend(data[str(i)]['audio_features'])
+                        i += 1
+                except:
+                    pass
+                with open(os.path.join(saved_path, filename[:-5]+'_new.json'), 'w') as new_file:
+                    json.dump(audio_features_list, new_file, indent=4)
 
-def test_same_number_of_songs():
+def test_same_number_of_songs(json_path, all_songs_path):
     """
     Test if the number of song in the all_track_features.json is equal to the number of unique songs in the playlists
     """
-    with open(os.path.join(SAVE_PATH, "all_tracks_features.json"), "r") as f:
-        result = json.load(f)
-    with open(os.path.join(SAVE_PATH, "all_songs.csv"), "r") as f:
+    all_tracks_features = pd.DataFrame()
+    json_pattern = os.path.join(json_path,'*.json')
+    file_list = glob.glob(json_pattern)
+    
+    dfs = []
+    for file in tqdm(file_list, desc="Loading audio features"):
+        with open(file) as f:
+            json_data = pd.json_normalize(json.loads(f.read()))
+        dfs.append(json_data)
+    all_tracks_features = pd.concat(dfs, sort=False) # or sort=True depending on your needs
+
+    with open(all_songs_path, "r") as f:
         all_songs = f.read().split(",")
-    num_songs_in_features = len(result.keys())
+
+    num_songs_in_features = len(all_tracks_features.index)
     num_all_songs = len(all_songs)
     return abs(num_songs_in_features - num_all_songs)
 
 if __name__ == "__main__":
-    pass
+    dir_path = "../../audio_features/track_features/"
+    saved_path = "../../audio_features/pyspark_track_features/"
+    # extract_only_audio_features(dir_path, saved_path)
+    json_path = saved_path
+    all_songs_path = "../../audio_features/all_songs.csv"
+    print(test_same_number_of_songs(json_path, all_songs_path))
