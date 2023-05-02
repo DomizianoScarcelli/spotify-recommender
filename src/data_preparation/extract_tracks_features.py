@@ -9,6 +9,7 @@ import glob
 
 #TODO: this changes every hour, so build a funciton that fetches it
 AUTH_TOKEN = "BQCcqo23ViHg5jKJJYLtroSXuntLkbyJal3unKeReP8agVUlICZHyzdpiuupZSY3Glo9Oeov6d-4GF3Lmu9wkKUeaFK5fzDKO9sE0KcJx1yDb-QI1bsk"
+# TODO: change path in order to be relative
 DATA_PATH = "/Users/dov/Desktop/spotify_million_playlist_dataset/data"
 SAVE_PATH = "/Users/dov/Desktop/spotify_million_playlist_dataset/saved"
 
@@ -160,8 +161,9 @@ def test_same_number_of_songs(json_path, all_songs_path):
 
 if __name__ == "__main__":
     dir_path = "../../audio_features/track_features/"
-    saved_path = "../../audio_features/pyspark_track_features/"
+    # saved_path = "../../audio_features/pyspark_track_features/"
+    saved_path = "../../audio_features/splitted_pyspark_track_features/"
     # extract_only_audio_features(dir_path, saved_path)
     json_path = saved_path
     all_songs_path = "../../audio_features/all_songs.csv"
-    print(test_same_number_of_songs(json_path, all_songs_path))
+    # print(test_same_number_of_songs(json_path, all_songs_path))
