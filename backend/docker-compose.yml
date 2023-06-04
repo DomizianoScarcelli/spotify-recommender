@@ -1,0 +1,11 @@
+version: 2.18.1
+services:
+    bigdata:
+        container_name: bigdata_server
+        build:
+            context: .
+            dockerfile: Dockerfile
+        environment:
+            JAVA_HOME: /usr/lib/jvm/java-11-openjdk-arm64
+        ports:
+            - 3004:3004
