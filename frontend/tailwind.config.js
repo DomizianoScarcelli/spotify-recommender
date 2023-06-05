@@ -4,10 +4,15 @@ export default {
 	theme: {
 		extend: {
 			colors: {
-				spotifyGreen: "#1DB954",
 				spotifyBlack: "#191414",
-				spotifyWhite: "#FFFFFF",
+				spotifyDarkGray: "#121212",
 				spotifyGray: "#B3B3B3",
+				spotifyLightGray: "A7A7A7",
+				spotifyWhite: "#FFFFFF",
+				spotifyGreen: "#65D46E",
+			},
+			fontFamily: {
+				gotham: ["Gotham", "sans-serif"],
 			},
 		},
 	},
