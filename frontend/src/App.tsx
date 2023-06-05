@@ -1,5 +1,5 @@
 import React from "react"
-
+import Searchbar from "./components/Searchbar"
 interface Song {
 	id: number
 	title: string
@@ -25,9 +25,11 @@ const App = () => {
 
 				{/* Main screen two cols */}
 				<div className="flex mt-5 gap-5">
-					<div className="bg-spotifyDarkGray rounded-xl py-5 px-8 w-80"> A</div>
+					<div className="bg-spotifyDarkGray rounded-xl py-5 px-8 w-80">
+						<Searchbar />
+					</div>
 					<div className="bg-spotifyDarkGray rounded-xl flex-1 py-5 px-8 ">
-						<p className="text-spotifyGray text-2xl">Your Playlist</p>
+						<p className="text-spotifyLightGray text-2xl">Your Playlist</p>
 					</div>
 				</div>
 			</div>
