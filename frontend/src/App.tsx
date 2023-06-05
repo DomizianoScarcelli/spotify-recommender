@@ -1,5 +1,7 @@
 import React from "react"
 import Searchbar from "./components/Searchbar"
+import Song from "./components/Song"
+import SongList from "./components/SongList"
 interface Song {
 	id: number
 	title: string
@@ -30,6 +32,7 @@ const App = () => {
 					</div>
 					<div className="bg-spotifyDarkGray rounded-xl flex-1 py-5 px-8 ">
 						<p className="text-spotifyLightGray text-2xl">Your Playlist</p>
+						<SongList />
 					</div>
 				</div>
 			</div>

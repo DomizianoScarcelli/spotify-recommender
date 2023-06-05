@@ -14,6 +14,9 @@ export default {
 			fontFamily: {
 				gotham: ["Gotham", "sans-serif"],
 			},
+			backgroundImage: {
+				placeholder: "url('https://picsum.photos/200')",
+			},
 		},
 	},
 	plugins: [],
