@@ -1,5 +1,5 @@
 import React from "react"
-import { SearchIcon } from "../constants/icons"
+import { SearchIcon } from "../shared/icons"
 
 const Searchbar = () => {
 	return (

@@ -1,7 +1,7 @@
 import React from "react"
 import Searchbar from "./components/Searchbar"
-import Song from "./components/Song"
 import SongList from "./components/SongList"
+import { SongType } from "./shared/types"
 interface Song {
 	id: number
 	title: string
@@ -13,10 +13,14 @@ interface Props {
 }
 
 const App = () => {
-	const songs: Song[] = [
-		{ id: 1, title: "Song 1", artist: "Artist 1" },
-		{ id: 2, title: "Song 2", artist: "Artist 2" },
-		{ id: 3, title: "Song 3", artist: "Artist 3" },
+	const songs: SongType[] = [
+		{ name: "Song 1", artist: "Artist 1", album: "marione", duration: "2:33" },
+		{ name: "Song 1", artist: "Artist 1", album: "marione", duration: "2:33" },
+		{ name: "Song 1", artist: "Artist 1", album: "marione", duration: "2:33" },
+		{ name: "Song 1", artist: "Artist 1", album: "marione", duration: "2:33" },
+		{ name: "Song 1", artist: "Artist 1", album: "marione", duration: "2:33" },
+		{ name: "Song 1", artist: "Artist 1", album: "marione", duration: "2:33" },
+		{ name: "Song 1", artist: "Artist 1", album: "marione", duration: "2:33" },
 	]
 
 	return (
@@ -27,13 +31,13 @@ const App = () => {
 
 				{/* Main screen two cols */}
 				<div className="flex mt-5 gap-5">
-					<div className="bg-spotifyDarkGray rounded-xl py-5 px-8 w-80">
+					<div className="bg-spotifyDarkGray rounded-xl w-fit py-5 px-8">
 						<Searchbar />
-						<SongList header={false} small={true} />
+						<SongList header={false} small={true} songs={songs} />
 					</div>
 					<div className="bg-spotifyDarkGray rounded-xl flex-1 py-5 px-8 ">
 						<p className="text-spotifyLightGray text-2xl">Your Playlist</p>
-						<SongList header={true} small={false} />
+						<SongList header={true} small={false} songs={songs} />
 					</div>
 				</div>
 			</div>
