@@ -8,10 +8,6 @@ interface Song {
 	artist: string
 }
 
-interface Props {
-	songs: Song[]
-}
-
 const App = () => {
 	const songs: SongType[] = [
 		{ name: "Song 1", artist: "Artist 1", album: "marione", duration: "2:33" },
@@ -24,24 +20,20 @@ const App = () => {
 	]
 
 	return (
-		<div className="bg-black h-screen text-spotifyWhite w-screen">
+		<div className="bg-spotifyBlack text-spotifyWhite h-screen">
 			{/* Main container */}
-			<div className="h-full p-6">
-				<h1 className="font-bold text-spotifyGreen text-3xl">Spotify Playlist Continuation</h1>
-
-				{/* Main screen two cols */}
-				<div className="flex mt-5 gap-5">
-					<div className="bg-spotifyDarkGray rounded-xl w-fit py-5 px-8">
-						<Searchbar />
-						<SongList header={false} small={true} songs={songs} />
-					</div>
-					<div className="bg-spotifyDarkGray rounded-xl flex-1 py-5 px-8 ">
-						<p className="text-spotifyLightGray text-2xl">Your Playlist</p>
-						<SongList header={true} small={false} songs={songs} />
-					</div>
+			<h1 className="font-bold text-spotifyGreen text-3xl px-6 pt-6">Spotify Playlist Continuation</h1>
+			{/* Main screen two cols */}
+			<div className="flex gap-5 p-5 h-[calc(100%-3.75rem)]">
+				<div className="bg-spotifyDarkGray rounded-xl w-fit py-5 px-8 overflow-y-scroll">
+					<Searchbar />
+					<SongList header={false} small={true} songs={songs} />
+				</div>
+				<div className="bg-spotifyDarkGray rounded-xl flex-1 py-5 px-8 overflow-y-scroll">
+					<p className="text-spotifyLightGray text-2xl">Your Playlist</p>
+					<SongList header={true} small={false} songs={songs} />
 				</div>
 			</div>
-			<div className="flex"></div>
 		</div>
 	)
 }

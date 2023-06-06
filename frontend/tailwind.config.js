@@ -4,7 +4,7 @@ export default {
 	theme: {
 		extend: {
 			colors: {
-				spotifyBlack: "#191414",
+				spotifyBlack: "#000000",
 				spotifyDarkGray: "#121212",
 				spotifyGray: "#242424",
 				spotifyLightGray: "#A7A7A7",

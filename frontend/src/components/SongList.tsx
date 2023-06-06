@@ -20,7 +20,7 @@ const SongList = ({ header, small, songs }: SongListProps) => {
 	)
 }
 
-interface SongProps {
+type SongProps = {
 	small: boolean
 	index: number
 	songDetails: SongType
