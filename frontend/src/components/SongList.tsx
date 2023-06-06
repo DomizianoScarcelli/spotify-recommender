@@ -23,7 +23,7 @@ type SongProps = {
 }
 const Song = ({ small }: SongProps) => {
 	return (
-		<div className="flex justify-between">
+		<div className={`flex ${small ? "justify-between" : "items-center"}`}>
 			{small ? <></> : <p className="text-spotifyLightGray text-sm w-1/12">1</p>}
 			<div className="flex w-4/12 gap-3">
 				<img src="https://picsum.photos/50" className="rounded h-50 w-50" />
