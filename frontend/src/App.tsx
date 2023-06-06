@@ -29,10 +29,11 @@ const App = () => {
 				<div className="flex mt-5 gap-5">
 					<div className="bg-spotifyDarkGray rounded-xl py-5 px-8 w-80">
 						<Searchbar />
+						<SongList header={false} small={true} />
 					</div>
 					<div className="bg-spotifyDarkGray rounded-xl flex-1 py-5 px-8 ">
 						<p className="text-spotifyLightGray text-2xl">Your Playlist</p>
-						<SongList />
+						<SongList header={true} small={false} />
 					</div>
 				</div>
 			</div>
