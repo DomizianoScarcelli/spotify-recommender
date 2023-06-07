@@ -17,21 +17,34 @@ const App = () => {
 		{ name: "Song 1", artist: "Artist 1", album: "marione", duration: "2:33" },
 		{ name: "Song 1", artist: "Artist 1", album: "marione", duration: "2:33" },
 		{ name: "Song 1", artist: "Artist 1", album: "marione", duration: "2:33" },
+		{ name: "Song 1", artist: "Artist 1", album: "marione", duration: "2:33" },
+		{ name: "Song 1", artist: "Artist 1", album: "marione", duration: "2:33" },
+		{ name: "Song 1", artist: "Artist 1", album: "marione", duration: "2:33" },
+		{ name: "Song 1", artist: "Artist 1", album: "marione", duration: "2:33" },
+		{ name: "Song 1", artist: "Artist 1", album: "marione", duration: "2:33" },
+		{ name: "Song 1", artist: "Artist 1", album: "marione", duration: "2:33" },
+		{ name: "Song 1", artist: "Artist 1", album: "marione", duration: "2:33" },
 	]
 
 	return (
-		<div className="bg-spotifyBlack text-spotifyWhite h-screen">
+		<div className="bg-spotifyBlack h-screen text-spotifyWhite">
 			{/* Main container */}
-			<h1 className="font-bold text-spotifyGreen text-3xl px-6 pt-6">Spotify Playlist Continuation</h1>
+			<h1 className="font-bold text-spotifyGreen px-6 pt-6 text-3xl">Spotify Playlist Continuation</h1>
 			{/* Main screen two cols */}
-			<div className="flex gap-5 p-5 h-[calc(100%-3.75rem)]">
-				<div className="bg-spotifyDarkGray rounded-xl min-w-[280px] max-w-fit w-full py-5 px-8 overflow-y-scroll">
+			<div className="flex h-[calc(100%-3.75rem)] p-5 gap-5">
+				<div className="bg-spotifyDarkGray rounded-xl max-w-fit min-w-[280px] w-full py-5 px-8 overflow-y-scroll">
 					<Searchbar />
 					<SongList header={false} small={true} songs={songs} />
 				</div>
-				<div className="bg-spotifyDarkGray rounded-xl flex-1 py-5 px-8 overflow-y-scroll min-w-[500px]">
+				<div className="bg-spotifyDarkGray rounded-xl flex-1 min-w-[500px] py-5 px-8 overflow-y-scroll">
 					<p className="text-spotifyLightGray text-2xl">Your Playlist</p>
 					<SongList header={true} small={false} songs={songs} />
+					{/* Line that separates the generated songs */}
+					<div className="flex mt-6 items-center justify-center">
+						<div className="bg-spotifyGreen h-0.5 mr-8 w-full"></div>
+						<div className="text-spotifyGreen text-2xl">Generated songs</div>
+						<div className="bg-spotifyGreen h-0.5 ml-8 w-full"></div>
+					</div>
 				</div>
 			</div>
 		</div>

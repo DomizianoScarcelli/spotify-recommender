@@ -10,3 +10,22 @@
 * {
 	font-family: "Gotham";
 }
+
+::-webkit-scrollbar {
+	padding: 1rem;
+	left: -100px;
+	width: 0.5rem;
+	border-radius: 10rem;
+}
+
+::-webkit-scrollbar-track {
+	border: solid 3px transparent;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: #242424;
+	border-radius: 10rem;
+	padding: 1rem;
+	margin: 1rem;
+	border: solid 3px transparent;
+}
