@@ -24,43 +24,27 @@ levenshtein_distance = """
         return matrix[query.length][str.length];
     }
 """
-# TODO: Add the indexes in queryCounter and stringCounter and then use the sum() to get the number of chars
+# TODO: Maybe make it more efficient
 string_char_distance = """
 function characterMatchDistance(inputQuery, inputString) {
-  const query = inputQuery.toLowerCase()
-  const string = inputString.toLowerCase()
-  const queryCounter = {};
-  const stringCounter = {};
+    const query = inputQuery.toLowerCase();
+    const string = inputString.toLowerCase();
+    const chars = query.split("")
+    let matchingPositions = []
+    for (let char of chars) {
+        const occurrencies = query.split(char).length - 1
+        let index = string.indexOf(char);
+        let howMany = 0
+        while (index >= 0 && howMany < occurrencies) {
+            if (index !== -1) matchingPositions.push(index)
+            index = string.indexOf(char, index + 1);
+            howMany += 1
+        }
 
-  // Count the characters in the query string
-  for (const char of query) {
-    queryCounter[char] = (queryCounter[char] || 0) + 1;
-  }
-
-  // Count the characters in the string
-  for (const char of string) {
-    stringCounter[char] = (stringCounter[char] || 0) + 1;
-  }
-
-  let matchCount = 0;
-  const matchingPositions = [];
-
-  // Iterate over the shorter string for efficient character matching
-  const shorterString = query.length <= string.length ? query : string;
-
-  for (let i = 0; i < shorterString.length; i++) {
-    const char = shorterString[i];
-
-    if (queryCounter[char] && stringCounter[char]) {
-      const minFrequency = Math.min(queryCounter[char], stringCounter[char]);
-      matchCount += minFrequency;
-
-      const matchPos = string.indexOf(char)
-
-      if (matchPos !== -1) matchingPositions.push(matchPos)
     }
-  }
-
-  return { matchCount, matchingPositions };
+    return {
+        matchCount: matchingPositions.length,
+        matchingPositions
+    };
 }
 """

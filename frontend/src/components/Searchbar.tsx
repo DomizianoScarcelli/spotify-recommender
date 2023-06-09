@@ -13,6 +13,7 @@ const Searchbar = ({ songSetter }: Props) => {
 		if (inputRef.current == null) return
 		if (inputRef.current.value == "") {
 			// songSetter([])
+			//TODO: Return to initial state
 			return
 		}
 		const query = inputRef.current.value
