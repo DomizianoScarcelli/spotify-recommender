@@ -5,7 +5,8 @@ import os
 from ..models.Song import Song
 from ..utils.json_utils import parse_json
 from ..utils.aggregator_functions import levenshtein_distance
-from bson.code import Code
+
+from typing import List
 
 
 class SongRepository:
@@ -58,3 +59,7 @@ class SongRepository:
         songs = [parse_json(song) for song in result]
 
         return songs
+
+    def get_all_songs(self, page: int = 1) -> List[Song]:
+        songs = self.collection.find()
+        return parse_json(songs)
