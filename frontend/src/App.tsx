@@ -17,7 +17,7 @@ const App = () => {
 			setSongs(result)
 		}
 		handleSongRetrieval()
-	})
+	}, [])
 
 	return (
 		<div className="bg-spotifyBlack h-screen text-spotifyWhite">
@@ -26,7 +26,7 @@ const App = () => {
 			{/* Main screen two cols */}
 			<div className="flex h-[calc(100%-3.75rem)] p-5 gap-5">
 				<div className="bg-spotifyDarkGray rounded-xl max-w-fit min-w-[280px] w-full py-5 px-8 overflow-y-scroll">
-					<Searchbar />
+					<Searchbar songSetter={setSongs} />
 					<SongList header={false} small={true} songs={songs} />
 				</div>
 				<div className="bg-spotifyDarkGray rounded-xl flex-1 min-w-[500px] py-5 px-8 overflow-y-scroll">
