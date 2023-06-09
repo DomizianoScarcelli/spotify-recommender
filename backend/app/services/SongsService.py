@@ -10,3 +10,6 @@ class SongsService:
 
     def get_song(self, id):
         return self.repository.get_song(id)
+
+    def search_song(self, query: str):
+        return self.repository.search_song(query)

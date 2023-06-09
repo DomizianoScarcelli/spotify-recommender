@@ -21,3 +21,9 @@ async def get_song(id: int):
 async def create_song(data: Song):
     song = service.create_song(data)
     return {"message": "Song created!", "song": song}
+
+
+@router.get("/search-song", tags=["songs"])
+async def search_song(query: str):
+    song = service.search_song(query)
+    return song

@@ -4,6 +4,8 @@ from pymongo.database import Database
 import os
 from ..models.Song import Song
 from ..utils.json_utils import parse_json
+from ..utils.aggregator_functions import levenshtein_distance
+from bson.code import Code
 
 
 class SongRepository:
@@ -22,3 +24,37 @@ class SongRepository:
     def get_song(self, id):
         song = self.collection.find_one({'id': id})
         return parse_json(song)
+
+    def search_song(self, query):
+        # Calculate Levenshtein distance in MongoDB using aggregation
+        pipeline = [
+            {
+                "$addFields": {
+                    "levenshteinDistance": {
+                        "$let": {
+                            "vars": {
+                                "query": query
+                            },
+                            "in": {
+                                "$function": {
+                                    "body": levenshtein_distance,
+                                    "args": ["$$query", "$name"],
+                                    "lang": "js"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "$sort": {"levenshteinDistance": 1}
+            }
+        ]
+
+        # Execute aggregation pipeline
+        result = self.collection.aggregate(pipeline)
+
+        # Convert the results to a list of dictionaries
+        songs = [parse_json(song) for song in result]
+
+        return songs
