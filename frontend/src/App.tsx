@@ -3,21 +3,23 @@ import Searchbar from "./components/Searchbar"
 import SongList from "./components/SongList"
 import { SongType } from "./shared/types"
 import { getAllSongs } from "./utils/apiCalls"
-interface Song {
-	id: number
-	title: string
-	artist: string
-}
 
 const App = () => {
 	const [songs, setSongs] = useState<SongType[]>([])
 	useEffect(() => {
 		const handleSongRetrieval = async () => {
 			const result = await getAllSongs()
-			setSongs(result)
+			const mapped = result.map((song) => {
+				return { ...song, matchingCharacters: [] }
+			})
+			setSongs(mapped)
 		}
 		handleSongRetrieval()
 	}, [])
+
+	useEffect(() => {
+		console.log(songs.map((song) => song.matchingPositions))
+	}, [songs])
 
 	return (
 		<div className="bg-spotifyBlack h-screen text-spotifyWhite">

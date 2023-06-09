@@ -26,14 +26,27 @@ type SongProps = {
 	songDetails: SongType
 }
 const Song = ({ small, index, songDetails }: SongProps) => {
-	const { name, artist, album, duration } = songDetails
+	const { name, artist, album, duration, matchingPositions } = songDetails
+
+	// Function to check if a character index is in the matchingCharacters array
+	const isMatchingCharacter = (index: number) => {
+		if (!matchingPositions) return false
+		return matchingPositions.includes(index)
+	}
+
 	return (
 		<div className={`flex rounded-lg hover:bg-spotifyGray p-4 ${small ? "justify-between" : "items-center"}`}>
 			{small ? <></> : <p className="text-spotifyLightGray text-sm w-1/12">{index}</p>}
 			<div className="flex w-4/12 gap-3">
 				<img src="https://picsum.photos/50" className="rounded h-50 w-50" />
 				<div className="flex flex-col justify-between">
-					<p className="font-medium text-m text-spotifyWhite">{name}</p>
+					<p className="font-medium text-m text-spotifyWhite">
+						{name.split("").map((char, index) => (
+							<span key={index} className={isMatchingCharacter(index) ? "text-spotifyGreen" : ""}>
+								{char}
+							</span>
+						))}
+					</p>
 					<p className="font-medium text-sm text-spotifyLightGray">{artist}</p>
 				</div>
 			</div>

@@ -4,7 +4,7 @@ from pymongo.database import Database
 import os
 from ..models.Song import Song
 from ..utils.json_utils import parse_json
-from ..utils.aggregator_functions import levenshtein_distance
+from ..utils.aggregator_functions import levenshtein_distance, string_char_distance
 
 from typing import List
 
@@ -31,14 +31,14 @@ class SongRepository:
         pipeline = [
             {
                 "$addFields": {
-                    "levenshteinDistance": {
+                    "similarity": {
                         "$let": {
                             "vars": {
                                 "query": query
                             },
                             "in": {
                                 "$function": {
-                                    "body": levenshtein_distance,
+                                    "body": string_char_distance,
                                     "args": ["$$query", "$name"],
                                     "lang": "js"
                                 }
@@ -48,7 +48,7 @@ class SongRepository:
                 }
             },
             {
-                "$sort": {"levenshteinDistance": 1}
+                "$sort": {"similarity": -1}
             }
         ]
 

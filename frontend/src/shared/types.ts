@@ -3,6 +3,7 @@ export type SongType = {
 	artist: string
 	album: string
 	duration: string
+	matchingPositions?: number[]
 }
 
 export type SearchResult = {
@@ -10,5 +11,10 @@ export type SearchResult = {
 	artist: string
 	album: string
 	duration: string
-	levenstheinDistance: number
+	similarity: Similarity
+}
+
+type Similarity = {
+	matchCount: number
+	matchingPositions: number[]
 }

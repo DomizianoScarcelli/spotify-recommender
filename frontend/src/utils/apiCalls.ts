@@ -11,5 +11,6 @@ export const getAllSongs = async (): Promise<SongType[]> => {
 export const searchSongs = async (query: string): Promise<SearchResult[]> => {
 	const URL = `${BASE_URL}/search-song?query=${query}`
 	const songs: SearchResult[] = (await axios.get(URL)).data
+	console.log(URL, songs)
 	return songs
 }
