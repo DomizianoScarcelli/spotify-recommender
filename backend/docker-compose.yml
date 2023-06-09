@@ -12,6 +12,8 @@ services:
             - 3004:3004
         depends_on:
             - mongodb
+        volumes:
+            - ./app:/code/app
     mongodb:
         image: mongo
         container_name: mongodb

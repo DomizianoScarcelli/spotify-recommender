@@ -9,4 +9,4 @@ class SongsService:
         return self.repository.create_song(data)
 
     def get_song(self, id):
-        return self.repository.create_song(id)
+        return self.repository.get_song(id)

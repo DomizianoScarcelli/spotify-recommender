@@ -1,4 +1,4 @@
-from ..utils.sparkSessionUtils import create_spark_session
+from ...utils.sparkSessionUtils import create_spark_session
 from pyspark.sql import DataFrame
 
 
