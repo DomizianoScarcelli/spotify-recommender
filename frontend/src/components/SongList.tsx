@@ -13,7 +13,7 @@ const SongList = ({ header, small, songs }: SongListProps) => {
 			{header ? <Header /> : null}
 			<li className="flex flex-col pt-3 whitespace-nowrap">
 				{songs?.map((song, index) => (
-					<Song small={small} songDetails={song} index={index + 1} />
+					<Song small={small} songDetails={song} index={index + 1} key={index} />
 				))}
 			</li>
 		</>

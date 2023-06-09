@@ -1,7 +1,8 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import Searchbar from "./components/Searchbar"
 import SongList from "./components/SongList"
 import { SongType } from "./shared/types"
+import { getAllSongs } from "./utils/apiCalls"
 interface Song {
 	id: number
 	title: string
@@ -9,22 +10,14 @@ interface Song {
 }
 
 const App = () => {
-	const songs: SongType[] = [
-		{ name: "Song 1", artist: "Artist 1", album: "marione", duration: "2:33" },
-		{ name: "Song 1", artist: "Artist 1", album: "marione", duration: "2:33" },
-		{ name: "Song 1", artist: "Artist 1", album: "marione", duration: "2:33" },
-		{ name: "Song 1", artist: "Artist 1", album: "marione", duration: "2:33" },
-		{ name: "Song 1", artist: "Artist 1", album: "marione", duration: "2:33" },
-		{ name: "Song 1", artist: "Artist 1", album: "marione", duration: "2:33" },
-		{ name: "Song 1", artist: "Artist 1", album: "marione", duration: "2:33" },
-		{ name: "Song 1", artist: "Artist 1", album: "marione", duration: "2:33" },
-		{ name: "Song 1", artist: "Artist 1", album: "marione", duration: "2:33" },
-		{ name: "Song 1", artist: "Artist 1", album: "marione", duration: "2:33" },
-		{ name: "Song 1", artist: "Artist 1", album: "marione", duration: "2:33" },
-		{ name: "Song 1", artist: "Artist 1", album: "marione", duration: "2:33" },
-		{ name: "Song 1", artist: "Artist 1", album: "marione", duration: "2:33" },
-		{ name: "Song 1", artist: "Artist 1", album: "marione", duration: "2:33" },
-	]
+	const [songs, setSongs] = useState<SongType[]>([])
+	useEffect(() => {
+		const handleSongRetrieval = async () => {
+			const result = await getAllSongs()
+			setSongs(result)
+		}
+		handleSongRetrieval()
+	})
 
 	return (
 		<div className="bg-spotifyBlack h-screen text-spotifyWhite">
