@@ -58,42 +58,6 @@ class SongRepository:
             result.append(clean_song)
         return result
 
-        return
-        # Calculate Levenshtein distance in MongoDB using aggregation
-        pipeline = [
-            {
-                "$addFields": {
-                    "similarity": {
-                        "$let": {
-                            "vars": {
-                                "query": query
-                            },
-                            "in": {
-                                "$function": {
-                                    "body": string_char_distance,
-                                    "args": ["$$query", "$name"],
-                                    "lang": "js"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            {
-                "$sort": {"similarity": -1}
-            }
-        ]
-
-        # Execute aggregation pipeline
-        result = self.collection.aggregate(pipeline)
-
-        LIMIT = 10
-        # Convert the results to a list of dictionaries
-        songs = [parse_json(song)
-                 for index, song in enumerate(result) if index <= LIMIT]
-
-        return songs
-
     def get_all_songs(self, page: int = 1) -> List[Song]:
         PAGE_SIZE = 50
         skip = (page-1) * PAGE_SIZE

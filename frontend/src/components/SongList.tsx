@@ -24,7 +24,7 @@ const SongList = ({ header, small, songs, playlistState }: SongListProps) => {
 	return (
 		<>
 			{header ? <Header /> : null}
-			<li className="flex flex-col pt-3 whitespace-nowrap overflow-clip ">
+			<li className="flex flex-col pt-3 whitespace-nowrap overflow-hidden">
 				{songs?.map((song, index) => (
 					<Song small={small} songDetails={song} index={index + 1} key={index} onClick={handleClick} />
 				))}
@@ -49,12 +49,12 @@ const Song = ({ small, index, songDetails, onClick }: SongProps) => {
 	}
 
 	return (
-		<div className={`flex rounded-lg hover:bg-spotifyGray p-4 cursor-pointer ${small ? "justify-between w-full bg-red-500" : "items-center"}`} onClick={(e) => onClick(songDetails)}>
+		<div className={`flex rounded-lg hover:bg-spotifyGray p-4 cursor-pointer gap-2 ${small ? "justify-between w-full " : "items-center"}`} onClick={(e) => onClick(songDetails)}>
 			{small ? <></> : <p className="text-spotifyLightGray text-sm w-1/12">{index}</p>}
-			<div className={`flex bg-purple-500 ${small ? "max-w-[180px] overflow-hidden" : "w-4/12"}  gap-3`}>
+			<div className={`flex  ${small ? "flex-1 " : "w-4/12"}  gap-3`}>
 				<img src="https://picsum.photos/50" className="rounded h-50 w-50" />
-				<div className="flex flex-col justify-between">
-					<p className="font-medium text-m text-spotifyWhite">
+				<div className={`flex flex-col justify-between ${small ? "truncate" : ""}`}>
+					<p className={`font-medium text-m text-spotifyWhite ${small ? "truncate" : ""}`}>
 						{name.split("").map((char, index) => (
 							<span key={index} className={isMatchingCharacter(index) ? "text-spotifyGreen" : ""}>
 								{char}
@@ -65,7 +65,7 @@ const Song = ({ small, index, songDetails, onClick }: SongProps) => {
 				</div>
 			</div>
 			{small ? (
-				<div className="flex flex-col bg-green-300 max-w-[150px] justify-around overflow-hidden">
+				<div className="flex flex-col max-w-[150px] justify-around overflow-hidden">
 					<p className="text-spotifyLightGray text-sm">{album}</p>
 					<p className="text-spotifyLightGray text-sm">{duration}</p>
 				</div>
