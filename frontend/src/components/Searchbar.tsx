@@ -5,30 +5,48 @@ import { SongType } from "../shared/types"
 
 type Props = {
 	songSetter: any
+	onClear: () => void
 }
-const Searchbar = ({ songSetter }: Props) => {
+
+const Searchbar = ({ songSetter, onClear }: Props) => {
 	const inputRef = useRef<HTMLInputElement>(null)
+	let debounceTimeout: any = null
+
 	const handleSearchSongs = async () => {
-		const songs: SongType[] = []
-		if (inputRef.current == null) return
-		if (inputRef.current.value == "") {
-			// songSetter([])
-			//TODO: Return to initial state
+		if (debounceTimeout) {
+			clearTimeout(debounceTimeout)
+		}
+
+		const query = inputRef.current?.value
+
+		if (!query) {
+			onClear()
 			return
 		}
-		const query = inputRef.current.value
-		console.log("QUERY", query)
-		if (!query) return []
-		const result = await searchSongs(query)
-		for (const item of result) {
-			const { name, artist, album, duration, similarity } = item
-			const { matchingPositions } = similarity
-			console.log("matching positions for", name, [...new Set(matchingPositions)])
-			const song = { name, artist, album, duration, matchingPositions: [...new Set(matchingPositions)] }
-			songs.push(song)
-		}
-		songSetter(songs)
+
+		debounceTimeout = setTimeout(async () => {
+			const songs: SongType[] = []
+			const result = await searchSongs(query)
+
+			for (const item of result) {
+				const { name, artist, album, duration, similarity } = item
+				const { matchingPositions } = similarity
+
+				const song = {
+					name,
+					artist,
+					album,
+					duration,
+					matchingPositions: [...new Set(matchingPositions)],
+				}
+
+				songs.push(song)
+			}
+
+			songSetter(songs)
+		}, 300) // Debounce delay of 300 milliseconds
 	}
+
 	return (
 		<div className="bg-spotifyGray flex rounded-3xl p-4 items-center">
 			<SearchIcon className="fill-spotifyLightGray mr-2 w-5" />

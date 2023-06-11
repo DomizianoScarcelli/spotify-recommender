@@ -65,8 +65,8 @@ const Song = ({ small, index, songDetails, onClick }: SongProps) => {
 				</div>
 			</div>
 			{small ? (
-				<div className="flex flex-col max-w-[150px] justify-around overflow-hidden">
-					<p className="text-spotifyLightGray text-sm">{album}</p>
+				<div className="flex flex-col text-right max-w-[130px] justify-around overflow-hidden">
+					<p className="text-spotifyLightGray text-sm truncate">{album}</p>
 					<p className="text-spotifyLightGray text-sm">{duration}</p>
 				</div>
 			) : (

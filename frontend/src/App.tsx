@@ -7,14 +7,15 @@ import { getAllSongs } from "./utils/apiCalls"
 const App = () => {
 	const [songs, setSongs] = useState<SongType[]>([])
 	const [playlistSongs, setPlaylistSongs] = useState<SongType[]>([])
+	const handleSongRetrieval = async () => {
+		const result = await getAllSongs()
+		const mapped = result.map((song) => {
+			return { ...song, matchingCharacters: [] }
+		})
+		setSongs(mapped)
+	}
+
 	useEffect(() => {
-		const handleSongRetrieval = async () => {
-			const result = await getAllSongs()
-			const mapped = result.map((song) => {
-				return { ...song, matchingCharacters: [] }
-			})
-			setSongs(mapped)
-		}
 		handleSongRetrieval()
 	}, [])
 
@@ -25,7 +26,7 @@ const App = () => {
 			{/* Main screen two cols */}
 			<div className="flex h-[calc(100%-3.75rem)] p-5 gap-5">
 				<div className="bg-spotifyDarkGray rounded-xl min-w-[280px] w-full max-w-[450px] py-5 px-8 overflow-y-scroll">
-					<Searchbar songSetter={setSongs} />
+					<Searchbar songSetter={setSongs} onClear={handleSongRetrieval} />
 					<SongList header={false} small={true} songs={songs} playlistState={{ playlistSongs, setPlaylistSongs }} />
 				</div>
 				<div className="bg-spotifyDarkGray rounded-xl flex-1 min-w-[500px] py-5 px-8 overflow-y-scroll">

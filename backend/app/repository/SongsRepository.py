@@ -15,7 +15,6 @@ class SongRepository:
             os.environ["DATABASE_URL"], username="admin", password="password")
         self.db: Database[Song] = self.client['songs_db']
         self.collection: Collection[Song] = self.db["songs"]
-        self.search_song_cursor_id = None
 
     def create_song(self, data: Song):
         song = data.dict()
@@ -30,17 +29,14 @@ class SongRepository:
         return parse_json(song)
 
     def search_song(self, query):
-        # TODO: put an id here
-        if self.search_song_cursor_id is not None:
-            self.collection.kill_cursors([self.search_song_cursor_id])
         query_spec = {"song_artist_concat": {
             "$regex": f".*{query}.*", "$options": "i"}}
 
         try:
             songs = self.collection.find(query_spec).limit(10)
-            self.search_song_cursor_id = songs.cursor_id
         except IndexError as e:
             return []
+
         result = []
 
         for song in songs:
