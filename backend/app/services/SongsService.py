@@ -1,4 +1,5 @@
 from ..repository.SongsRepository import SongRepository
+from ..models.Responses import PaginatedSongs
 
 
 class SongsService:
@@ -18,8 +19,9 @@ class SongsService:
     def search_song(self, query: str):
         return self.repository.search_song(query)
 
-    def get_all_songs(self, page: int = 1):
-        return self.repository.get_all_songs(page)
+    def get_all_songs(self, page: int = 1) -> PaginatedSongs:
+        songs = self.repository.get_all_songs(page)
+        return {"songs": songs, "next_page": page+1}
 
     def drop_database(self):
         return self.repository.drop_database()

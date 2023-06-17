@@ -6,6 +6,11 @@ export type SongType = {
 	matchingPositions?: number[]
 }
 
+export type PaginatedSongs = {
+	songs: SongType[]
+	next_page: number
+}
+
 export type SearchResult = {
 	name: string
 	artist: string
