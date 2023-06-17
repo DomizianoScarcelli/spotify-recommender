@@ -46,3 +46,8 @@ async def get_all_songs(page: int = 1):
 async def drop_database():
     song = service.drop_database()
     return song
+
+
+@router.post("/continuate-playlist", tags=["playlist"])
+async def continuate_playlist(songs: List[Song]):
+    pass
