@@ -1,8 +1,15 @@
 import requests
-import dotenv
 import os
+import dotenv
+import base64
 
-dotenv.load_dotenv("../../.env")
+dotenv.load_dotenv()
+
+
+class ImageNotFoundError(Exception):
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)
 
 
 class LastfmClient:
@@ -15,9 +22,14 @@ class LastfmClient:
             'method': 'album.getInfo',
             'api_key': self.api,
             'artist': artist_name,
-            'album': album_name
+            'album': album_name,
+            "format": "json"
         }
-        response = requests.get(URL, params=params)
+        response = requests.get(URL, params=params).json()
         image_url = response["album"]["image"][1]["#text"]
-        image = requests.get(image_url)
-        return image.raw
+        if image_url == "":
+            raise ImageNotFoundError(
+                f"Image was not found for album: {album_name}")
+        image = requests.get(image_url).content
+        encoded_image = base64.b64encode(image)
+        return image

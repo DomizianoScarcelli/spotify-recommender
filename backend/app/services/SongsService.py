@@ -1,5 +1,5 @@
-from ..repository.SongsRepository import SongRepository
-from ..models.Responses import PaginatedSongs
+from repository.SongsRepository import SongRepository
+from models.Responses import PaginatedSongs
 
 
 class SongsService:

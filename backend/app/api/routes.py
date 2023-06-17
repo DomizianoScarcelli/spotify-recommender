@@ -1,6 +1,6 @@
 from fastapi import APIRouter
-from ..services.SongsService import SongsService
-from ..models.Song import Song
+from services.SongsService import SongsService
+from models.Song import Song
 from typing import List
 
 router = APIRouter()
@@ -38,7 +38,7 @@ async def search_song(query: str):
 
 @router.get("/all-songs", tags=["songs"])
 async def get_all_songs(page: int = 1):
-    song = service.get_all_songs(page)
+    song = service.get_all_songs(page=page)
     return song
 
 

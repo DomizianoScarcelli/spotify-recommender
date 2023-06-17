@@ -1,9 +1,10 @@
-from fastapi import FastAPI
-from .services.recommendations.UserBasedRecommender import UserBasedRecommender
-from .api.routes import router
 from fastapi.middleware.cors import CORSMiddleware
+from api.routes import router
+from fastapi import FastAPI
+import os
 
 app = FastAPI()
+print(os.environ)
 
 app.include_router(router)
 

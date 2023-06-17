@@ -1,8 +1,5 @@
 import requests
-import dotenv
 import os
-
-dotenv.load_dotenv("../../.env")
 
 
 class SpotifyClient:

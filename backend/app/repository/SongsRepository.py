@@ -1,12 +1,10 @@
+from typing import List
 from pymongo import MongoClient
 from pymongo.collection import Collection
 from pymongo.database import Database
 import os
-from ..models.Song import Song
-from ..utils.json_utils import parse_json
-from ..utils.aggregator_functions import levenshtein_distance, string_char_distance
-
-from typing import List
+from models.Song import Song
+from utils.json_utils import parse_json
 
 
 class SongRepository:
@@ -54,10 +52,14 @@ class SongRepository:
             result.append(clean_song)
         return result
 
-    def get_all_songs(self, page: int = 1) -> List[Song]:
-        PAGE_SIZE = 50
-        skip = (page-1) * PAGE_SIZE
-        songs = self.collection.find().skip(skip).limit(PAGE_SIZE)
+    def get_all_songs(self, paginated: bool = True, page: int = 1) -> List[Song]:
+        print("getting songs")
+        if paginated:
+            PAGE_SIZE = 50
+            skip = (page-1) * PAGE_SIZE
+            songs = self.collection.find().skip(skip).limit(PAGE_SIZE)
+        else:
+            songs = self.collection.find()
         return parse_json(songs)
 
     def drop_database(self):
