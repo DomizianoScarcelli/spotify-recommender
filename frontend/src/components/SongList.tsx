@@ -1,5 +1,6 @@
 import React, { MouseEventHandler, useState } from "react"
 import { SongType } from "../shared/types"
+import { TrashIcon } from "../shared/icons"
 
 type SongListProps = {
 	header: boolean
@@ -21,12 +22,16 @@ const SongList = ({ header, small, songs, playlistState }: SongListProps) => {
 		setPlaylistSongs([...playlistSongs, song])
 	}
 
+	const removeSongFromPlaylist = (song: SongType) => {
+		setPlaylistSongs(playlistSongs.filter((item) => item !== song))
+	}
+
 	return (
 		<>
 			{header ? <Header /> : null}
 			<li className="flex flex-col pt-3 whitespace-nowrap overflow-hidden">
 				{songs?.map((song, index) => (
-					<Song small={small} songDetails={song} index={index + 1} key={index} onClick={handleClick} />
+					<Song small={small} songDetails={song} index={index + 1} key={index} onClick={handleClick} removeSong={removeSongFromPlaylist} />
 				))}
 			</li>
 		</>
@@ -38,9 +43,11 @@ type SongProps = {
 	index: number
 	songDetails: SongType
 	onClick: (song: SongType) => void
+	removeSong: (song: SongType) => void
 }
-const Song = ({ small, index, songDetails, onClick }: SongProps) => {
+const Song = ({ small, index, songDetails, onClick, removeSong }: SongProps) => {
 	const { name, artist, album, duration, matchingPositions } = songDetails
+	const [hover, setHover] = useState<boolean>(false)
 
 	// Function to check if a character index is in the matchingCharacters array
 	const isMatchingCharacter = (index: number) => {
@@ -48,8 +55,20 @@ const Song = ({ small, index, songDetails, onClick }: SongProps) => {
 		return matchingPositions.includes(index)
 	}
 
+	const handleMouseOver = () => {
+		setHover(true)
+	}
+	const HandleMouseOut = () => {
+		setHover(false)
+	}
+
 	return (
-		<div className={`flex rounded-lg hover:bg-spotifyGray p-4 cursor-pointer gap-2 ${small ? "justify-between w-full " : "items-center"}`} onClick={(e) => onClick(songDetails)}>
+		<div
+			className={`flex rounded-lg hover:bg-spotifyGray p-4 cursor-pointer gap-2 ${small ? "justify-between w-full " : "items-center"}`}
+			onClick={(e) => onClick(songDetails)}
+			onMouseOver={handleMouseOver}
+			onMouseOut={HandleMouseOut}
+		>
 			{small ? <></> : <p className="text-spotifyLightGray text-sm w-1/12">{index}</p>}
 			<div className={`flex  ${small ? "flex-1 " : "w-4/12"}  gap-3`}>
 				<img src="https://picsum.photos/50" className="rounded h-50 w-50" />
@@ -75,6 +94,8 @@ const Song = ({ small, index, songDetails, onClick }: SongProps) => {
 					<p className="text-spotifyLightGray text-sm w-2/12">{duration}</p>
 				</>
 			)}
+
+			{!small && hover ? <TrashIcon className="fill-spotifyLightGray mr-2 w-3 hover:fill-spotifyGreen" onClick={(e) => removeSong(songDetails)} /> : <></>}
 		</div>
 	)
 }
