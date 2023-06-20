@@ -5,3 +5,4 @@ uvicorn
 pydantic
 tqdm
 python-dotenv
+minio

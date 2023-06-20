@@ -42,6 +42,12 @@ async def get_all_songs(page: int = 1):
     return song
 
 
+@router.get("/album-art", tags=["albums"])
+async def get_album_art(album_uri: str):
+    image = service.get_album_art(album_uri)
+    return image
+
+
 @router.delete("/drop-database", tags=["songs"])
 async def drop_database():
     song = service.drop_database()

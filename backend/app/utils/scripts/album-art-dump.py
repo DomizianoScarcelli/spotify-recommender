@@ -9,7 +9,7 @@ song_repository = SongRepository()
 
 
 all_songs = song_repository.get_all_songs(
-    page=1)  # Remove pagination or iterate over it
+    paginated=False)  # Remove pagination or iterate over it
 objects_in_bucket = minio_client.get_object_names()
 
 for song in tqdm(all_songs):
@@ -21,3 +21,5 @@ for song in tqdm(all_songs):
     except ImageNotFoundError as e:
         print(
             f"Image wasn't found for the album: {song['album']}, skipping...")
+    except:
+        print("Another error occurred, skipping album...")

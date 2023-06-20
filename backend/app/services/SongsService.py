@@ -23,5 +23,8 @@ class SongsService:
         songs = self.repository.get_all_songs(page)
         return {"songs": songs, "next_page": page+1}
 
+    def get_album_art(self, album_uri: str) -> str:
+        return self.repository.get_album_art(album_uri)
+
     def drop_database(self):
         return self.repository.drop_database()

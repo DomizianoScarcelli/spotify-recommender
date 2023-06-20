@@ -5,12 +5,14 @@ from pymongo.database import Database
 import os
 from models.Song import Song
 from utils.json_utils import parse_json
+from clients.MinioClient import MinioClient
 
 
 class SongRepository:
     def __init__(self):
         self.client = MongoClient(
             os.environ["DATABASE_URL"], username="admin", password="password")
+        self.minio_client = MinioClient()
         self.db: Database[Song] = self.client['songs_db']
         self.collection: Collection[Song] = self.db["songs"]
 
@@ -61,6 +63,10 @@ class SongRepository:
         else:
             songs = self.collection.find()
         return parse_json(songs)
+
+    def get_album_art(self, album_uri: str) -> str:
+        image = self.minio_client.get_object(album_uri)
+        return image
 
     def drop_database(self):
         self.collection.delete_many({})
