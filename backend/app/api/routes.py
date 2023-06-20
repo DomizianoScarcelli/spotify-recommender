@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 from services.SongsService import SongsService
 from models.Song import Song
+from models.Requests import SongRequest
 from typing import List
 
 router = APIRouter()
@@ -55,5 +56,5 @@ async def drop_database():
 
 
 @router.post("/continuate-playlist", tags=["playlist"])
-async def continuate_playlist(songs: List[Song]):
-    pass
+async def continuate_playlist(songs: List[SongRequest]):
+    return service.continuate_playlist(songs)

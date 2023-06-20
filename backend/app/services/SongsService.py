@@ -1,5 +1,8 @@
 from repository.SongsRepository import SongRepository
 from models.Responses import PaginatedSongs
+from typing import List
+from models.Song import Song
+from models.Requests import SongRequest
 
 
 class SongsService:
@@ -28,3 +31,6 @@ class SongsService:
 
     def drop_database(self):
         return self.repository.drop_database()
+
+    def continuate_playlist(self, songs: List[SongRequest]):
+        return songs

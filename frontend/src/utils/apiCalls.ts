@@ -19,3 +19,15 @@ export const searchSongs = async (query: string): Promise<SearchResult[]> => {
 		return { ...song, duration: convertMillisecondsToMinutesAndSeconds(parseInt(song.duration)) }
 	})
 }
+
+export const continuatePlaylist = async (songs: SongType[]): Promise<any> => {
+	const URL = `${BASE_URL}/continuate-playlist`
+	const parsedSongs = songs.map(({ song_uri, album_uri }) => {
+		return {
+			song_uri,
+			album_uri,
+		}
+	})
+	const response: any = await axios.post(URL, parsedSongs)
+	return response
+}

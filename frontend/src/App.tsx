@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import Searchbar from "./components/Searchbar"
 import SongList from "./components/SongList"
 import { SongType } from "./shared/types"
-import { getAllSongs } from "./utils/apiCalls"
+import { continuatePlaylist, getAllSongs } from "./utils/apiCalls"
 import { SparklerIcon } from "./shared/icons"
 
 const App = () => {
@@ -21,10 +21,10 @@ const App = () => {
 		handleSongRetrieval()
 	}, [])
 
-	const playlistGeneration = () => {
+	const playlistGeneration = async () => {
+		const response = await continuatePlaylist(playlistSongs)
 		setGenerated(true)
-		console.log(generated)
-		return generated
+		return response
 	}
 
 	return (
