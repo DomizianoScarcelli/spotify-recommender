@@ -1,13 +1,14 @@
 from repository.SongsRepository import SongRepository
 from models.Responses import PaginatedSongs
 from typing import List
-from models.Song import Song
 from models.Requests import SongRequest
+from services.recommendations.BaseRecommender import BaseRecommender
 
 
 class SongsService:
     def __init__(self):
         self.repository = SongRepository()
+        self.base_recommender = BaseRecommender()
 
     def create_song(self, data):
         return self.repository.create_song(data)

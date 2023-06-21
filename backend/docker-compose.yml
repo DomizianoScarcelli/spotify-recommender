@@ -6,7 +6,7 @@ services:
             context: .
             dockerfile: Dockerfile
         environment:
-            JAVA_HOME: /usr/lib/jvm/java-11-openjdk-arm64
+            JAVA_HOME: /usr/lib/jvm/java-17-openjdk-arm64
             DATABASE_URL: mongodb://mongodb:27017
         env_file:
             - ./.env

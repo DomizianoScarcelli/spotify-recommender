@@ -6,3 +6,5 @@ pydantic
 tqdm
 python-dotenv
 minio
+numpy
+requests

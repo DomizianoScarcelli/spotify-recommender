@@ -1,7 +1,7 @@
 from pyspark.sql import SparkSession
 from pyspark import SparkConf, SparkContext
 from typing import Tuple
-import os
+from pyspark.sql import DataFrame
 
 
 def create_spark_session() -> Tuple[SparkContext, SparkSession]:
@@ -17,4 +17,4 @@ def create_spark_session() -> Tuple[SparkContext, SparkSession]:
     except:
         pass
     spark = SparkSession.builder.getOrCreate()
-    return sc, spark
+    return spark, sc
