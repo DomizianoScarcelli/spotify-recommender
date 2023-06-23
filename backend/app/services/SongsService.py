@@ -2,13 +2,13 @@ from repository.SongsRepository import SongRepository
 from models.Responses import PaginatedSongs
 from typing import List
 from models.Requests import SongRequest
-from services.recommendations.BaseRecommender import BaseRecommender
+from services.recommendations.UserBasedRecommender import UserBasedRecommender
 
 
 class SongsService:
     def __init__(self):
         self.repository = SongRepository()
-        self.base_recommender = BaseRecommender()
+        self.user_based_recommender = UserBasedRecommender()
 
     def create_song(self, data):
         return self.repository.create_song(data)
@@ -34,4 +34,4 @@ class SongsService:
         return self.repository.drop_database()
 
     def continuate_playlist(self, songs: List[SongRequest]):
-        return songs
+        return self.user_based_recommender.perform_recommendation(songs)

@@ -60,3 +60,16 @@ audio_features_schema = StructType([
     StructField("duration_ms", LongType(), True),
     StructField("time_signature", IntegerType(), True)
 ])
+
+client_song_schema = StructType([
+    StructField("artist", StringType(), True),
+    StructField("song_uri", StringType(), True),
+    StructField("album_uri", StringType(), True),
+    StructField("name", StringType(), True),
+    StructField("album", StringType(), True)
+])
+
+song_request_schema = StructType([
+    StructField("song_uri", StringType(), True),
+    StructField("album_uri", StringType(), True),
+])
