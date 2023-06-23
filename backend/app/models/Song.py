@@ -7,3 +7,6 @@ class Song(BaseModel):
     artist: str
     album: str
     duration: int
+    song_uri: str
+    album_uri: str
+    song_artist_concat: str

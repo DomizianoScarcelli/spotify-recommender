@@ -3,3 +3,8 @@ pymongo==4.3.3
 pyspark==3.3.2
 uvicorn
 pydantic
+tqdm
+python-dotenv
+minio
+numpy
+requests
