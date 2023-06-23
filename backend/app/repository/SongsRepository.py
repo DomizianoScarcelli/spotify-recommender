@@ -28,6 +28,10 @@ class SongRepository:
         song = self.collection.find_one({'id': id})
         return parse_json(song)
 
+    def get_song_by_uri(self, uri: str):
+        song = self.collection.find_one({'song_uri': uri}, {'_id': 0})
+        return song
+
     def search_song(self, query):
         query_spec = {"song_artist_concat": {
             "$regex": f".*{query}.*", "$options": "i"}}

@@ -27,3 +27,8 @@ type Similarity = {
 	matchCount: number
 	matchingPositions: number[]
 }
+
+export type RecommendationResponse = {
+	track_uri: string
+	similarity: number
+}

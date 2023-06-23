@@ -19,6 +19,12 @@ async def get_song(id: int):
     return {"song": song}
 
 
+@router.get("/get-song-by-uri", tags=["songs"])
+async def get_song_by_uri(uri: str):
+    song = service.get_song_by_uri(uri)
+    return {"song": song}
+
+
 @router.post("/create-song", tags=["songs"])
 async def create_song(data: Song):
     song = service.create_song(data)

@@ -2,13 +2,15 @@ import React, { useEffect, useState } from "react"
 import Searchbar from "./components/Searchbar"
 import SongList from "./components/SongList"
 import { SongType } from "./shared/types"
-import { continuatePlaylist, getAllSongs } from "./utils/apiCalls"
+import { continuatePlaylist, getAllSongs, getSongsFromUri } from "./utils/apiCalls"
 import { SparklerIcon } from "./shared/icons"
 
 const App = () => {
 	const [songs, setSongs] = useState<SongType[]>([])
 	const [playlistSongs, setPlaylistSongs] = useState<SongType[]>([])
 	const [generated, setGenerated] = useState<boolean>(false)
+	const [inProgress, setInProgress] = useState<boolean>(false)
+	const [recommendedSongs, setRecommendedSongs] = useState<SongType[]>([])
 	const handleSongRetrieval = async () => {
 		const result = await getAllSongs()
 		const mapped = result.map((song) => {
@@ -22,19 +24,23 @@ const App = () => {
 	}, [])
 
 	const playlistGeneration = async () => {
-		const response = await continuatePlaylist(playlistSongs)
+		setInProgress(true)
+		const recommendationResponse = await continuatePlaylist(playlistSongs)
+		const recommendations = await getSongsFromUri(recommendationResponse)
+		setInProgress(false)
 		setGenerated(true)
-		return response
+		setRecommendedSongs(recommendations)
+		return recommendations
 	}
 
 	return (
 		<div className="bg-spotifyBlack h-screen text-spotifyWhite">
 			{/* Main container */}
-			<div className="flex items-center pt-6 px-6 justify-between">
+			<div className="flex px-6 pt-6 items-center justify-between">
 				<h1 className="font-bold text-spotifyGreen text-3xl">Spotify Playlist Continuation</h1>
-				<div className="bg-spotifyGreen text-spotifyBlack text-l p-3 rounded-xl cursor-pointer flex items-center justify-between" onClick={playlistGeneration}>
-					<SparklerIcon className="fill-spotifyLightGray mr-2 w-5 h-5" />
-					<p>CONTINUATE</p>
+				<div className="bg-spotifyGreen rounded-xl cursor-pointer flex text-spotifyBlack text-l p-3 items-center justify-between" onClick={playlistGeneration}>
+					<SparklerIcon className="h-5 fill-spotifyLightGray mr-2 w-5" />
+					{inProgress ? <p>GENERATING...</p> : <p>CONTINUATE</p>}
 				</div>
 			</div>
 			{/* Main screen two cols */}
@@ -48,11 +54,14 @@ const App = () => {
 					<SongList header={true} small={false} songs={playlistSongs} playlistState={{ playlistSongs, setPlaylistSongs }} />
 					{/* Line that separates the generated songs */}
 					{generated ? (
-						<div className="flex mt-6 items-center justify-center">
-							<div className="bg-spotifyGreen h-0.5 mr-8 w-full"></div>
-							<div className="text-spotifyGreen text-2xl">Generated songs</div>
-							<div className="bg-spotifyGreen h-0.5 ml-8 w-full"></div>
-						</div>
+						<>
+							<div className="flex mt-6 items-center justify-center">
+								<div className="bg-spotifyGreen h-0.5 mr-8 w-full"></div>
+								<div className="text-spotifyGreen text-2xl">Generated songs</div>
+								<div className="bg-spotifyGreen h-0.5 ml-8 w-full"></div>
+							</div>
+							<SongList header={false} small={false} songs={recommendedSongs} playlistState={{ playlistSongs: recommendedSongs, setPlaylistSongs: setRecommendedSongs }} />
+						</>
 					) : (
 						<></>
 					)}

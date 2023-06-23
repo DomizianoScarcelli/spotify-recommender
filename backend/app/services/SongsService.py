@@ -20,6 +20,9 @@ class SongsService:
     def get_song(self, id):
         return self.repository.get_song(id)
 
+    def get_song_by_uri(self, uri: str):
+        return self.repository.get_song_by_uri(uri)
+
     def search_song(self, query: str):
         return self.repository.search_song(query)
 

@@ -31,6 +31,7 @@ class UserBasedRecommender:
         songs = [json.loads(song.json()) for song in songs]
         rdd = spark.sparkContext.parallelize(songs)
         df = spark.read.schema(song_request_schema).json(rdd)
+        df.show()
         return df
 
     def sparse_vector_encoding(self, songs: DataFrame) -> SparseVector:
@@ -129,4 +130,4 @@ class UserBasedRecommender:
         final_reccomendations = self.recommendation_info.collect()
 
         # track_uri -> similarity
-        return {item[-1]: item[-2] for item in final_reccomendations}
+        return [{"track_uri": item[-1], "similarity": item[-2]} for item in final_reccomendations]

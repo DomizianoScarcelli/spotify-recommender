@@ -1,4 +1,4 @@
-import { PaginatedSongs, SearchResult, SongType } from "../shared/types"
+import { PaginatedSongs, RecommendationResponse, SearchResult, SongType } from "../shared/types"
 import { BASE_URL } from "../shared/urls"
 import axios from "axios"
 import { convertMillisecondsToMinutesAndSeconds } from "./timeUtils"
@@ -20,7 +20,7 @@ export const searchSongs = async (query: string): Promise<SearchResult[]> => {
 	})
 }
 
-export const continuatePlaylist = async (songs: SongType[]): Promise<any> => {
+export const continuatePlaylist = async (songs: SongType[]): Promise<RecommendationResponse[]> => {
 	const URL = `${BASE_URL}/continuate-playlist`
 	const parsedSongs = songs.map(({ song_uri, album_uri }) => {
 		return {
@@ -28,6 +28,17 @@ export const continuatePlaylist = async (songs: SongType[]): Promise<any> => {
 			album_uri,
 		}
 	})
-	const response: any = await axios.post(URL, parsedSongs)
+	const response: RecommendationResponse[] = (await axios.post(URL, parsedSongs)).data
 	return response
+}
+
+export const getSongsFromUri = async (songInfo: RecommendationResponse[]): Promise<SongType[]> => {
+	const result: SongType[] = []
+	const URL = `${BASE_URL}/get-song-by-uri`
+	console.log("song info: ", songInfo)
+	for (const { track_uri } of songInfo) {
+		const song = (await axios.get(`${URL}?uri=${track_uri}`)).data
+		result.push(song)
+	}
+	return result
 }
