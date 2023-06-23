@@ -12,7 +12,7 @@ const AlbumArt = ({ albumUri }: Props) => {
 			setAlbumart(image)
 		}
 		retrieveAlbumArt()
-	}, [])
+	}, [albumUri])
 
 	useEffect(() => {
 		if (albumArt != "") console.log("ALBUM ART DEBUG: ", albumArt)
