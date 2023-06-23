@@ -29,14 +29,18 @@ const Searchbar = ({ songSetter, onClear }: Props) => {
 			const result = await searchSongs(query)
 
 			for (const item of result) {
-				const { name, artist, album, duration, similarity } = item
+				const { id, name, artist, album, duration, similarity, song_uri, song_artist_concat, album_uri } = item
 				const { matchingPositions } = similarity
 
 				const song = {
+					id,
 					name,
 					artist,
 					album,
 					duration,
+					song_uri,
+					song_artist_concat,
+					album_uri,
 					matchingPositions: [...new Set(matchingPositions)],
 				}
 

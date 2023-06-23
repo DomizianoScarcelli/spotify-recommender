@@ -50,6 +50,9 @@ class SongRepository:
                 "artist": song["artist"],
                 "album": song["album"],
                 "duration": song["duration"],
+                "song_uri": song["song_uri"],
+                "album_uri": song["album_uri"],
+                "song_artist_concat": song["song_artist_concat"],
                 "similarity": {
                     "matchCount": len(query),
                     "matchingPositions": []  # TODO: implement this

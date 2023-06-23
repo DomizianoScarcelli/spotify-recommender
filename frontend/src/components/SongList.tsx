@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { SongType } from "../shared/types"
 import { TrashIcon } from "../shared/icons"
 
@@ -47,6 +47,9 @@ type SongProps = {
 }
 const Song = ({ small, index, songDetails, onClick, removeSong }: SongProps) => {
 	const { name, artist, album, duration, matchingPositions } = songDetails
+	useEffect(() => {
+		console.log(songDetails)
+	}, [])
 	const [hover, setHover] = useState<boolean>(false)
 
 	// Function to check if a character index is in the matchingCharacters array
@@ -74,11 +77,12 @@ const Song = ({ small, index, songDetails, onClick, removeSong }: SongProps) => 
 				<img src="https://picsum.photos/50" className="rounded h-50 w-50" />
 				<div className={`flex flex-col justify-between ${small ? "truncate" : ""}`}>
 					<p className={`font-medium text-m text-spotifyWhite ${small ? "truncate" : ""}`}>
-						{name.split("").map((char, index) => (
+						{/* {name.split("").map((char, index) => (
 							<span key={index} className={isMatchingCharacter(index) ? "text-spotifyGreen" : ""}>
 								{char}
 							</span>
-						))}
+						))} */}
+						<p>{name}</p>
 					</p>
 					<p className="font-medium text-sm text-spotifyLightGray">{artist}</p>
 				</div>

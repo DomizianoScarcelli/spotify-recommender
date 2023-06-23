@@ -16,10 +16,15 @@ export type PaginatedSongs = {
 }
 
 export type SearchResult = {
+	id: string
 	name: string
 	artist: string
 	album: string
 	duration: string
+	song_uri: string
+	album_uri: string
+	song_artist_concat: string
+	matchingPositions?: number[]
 	similarity: Similarity
 }
 

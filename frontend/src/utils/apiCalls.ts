@@ -14,7 +14,6 @@ export const getAllSongs = async (): Promise<SongType[]> => {
 export const searchSongs = async (query: string): Promise<SearchResult[]> => {
 	const URL = `${BASE_URL}/search-song?query=${query}`
 	const songs: SearchResult[] = (await axios.get(URL)).data
-	console.log(URL, songs)
 	return songs.map((song) => {
 		return { ...song, duration: convertMillisecondsToMinutesAndSeconds(parseInt(song.duration)) }
 	})
@@ -33,12 +32,12 @@ export const continuatePlaylist = async (songs: SongType[]): Promise<Recommendat
 }
 
 export const getSongsFromUri = async (songInfo: RecommendationResponse[]): Promise<SongType[]> => {
-	const result: SongType[] = []
+	const result: { song: SongType }[] = []
 	const URL = `${BASE_URL}/get-song-by-uri`
 	console.log("song info: ", songInfo)
 	for (const { track_uri } of songInfo) {
 		const song = (await axios.get(`${URL}?uri=${track_uri}`)).data
 		result.push(song)
 	}
-	return result
+	return result.map((item) => item.song)
 }

@@ -23,6 +23,14 @@ const App = () => {
 		handleSongRetrieval()
 	}, [])
 
+	useEffect(() => {
+		console.log("RECOMMENDATIONS DEBUG: ", recommendedSongs)
+	}, [recommendedSongs])
+
+	useEffect(() => {
+		console.log("PLAYLIST SONGS DEBUG: ", playlistSongs)
+	}, [playlistSongs])
+
 	const playlistGeneration = async () => {
 		setInProgress(true)
 		const recommendationResponse = await continuatePlaylist(playlistSongs)
@@ -30,7 +38,6 @@ const App = () => {
 		setInProgress(false)
 		setGenerated(true)
 		setRecommendedSongs(recommendations)
-		return recommendations
 	}
 
 	return (
@@ -40,7 +47,7 @@ const App = () => {
 				<h1 className="font-bold text-spotifyGreen text-3xl">Spotify Playlist Continuation</h1>
 				<div className="bg-spotifyGreen rounded-xl cursor-pointer flex text-spotifyBlack text-l p-3 items-center justify-between" onClick={playlistGeneration}>
 					<SparklerIcon className="h-5 fill-spotifyLightGray mr-2 w-5" />
-					{inProgress ? <p>GENERATING...</p> : <p>CONTINUATE</p>}
+					{generated ? inProgress ? <p>GENERATING...</p> : <p>AGAIN!</p> : inProgress ? <p>GENERATING...</p> : <p>CONTINUATE</p>}
 				</div>
 			</div>
 			{/* Main screen two cols */}
@@ -60,7 +67,7 @@ const App = () => {
 								<div className="text-spotifyGreen text-2xl">Generated songs</div>
 								<div className="bg-spotifyGreen h-0.5 ml-8 w-full"></div>
 							</div>
-							<SongList header={false} small={false} songs={recommendedSongs} playlistState={{ playlistSongs: recommendedSongs, setPlaylistSongs: setRecommendedSongs }} />
+							<SongList header={true} small={false} songs={recommendedSongs} playlistState={{ playlistSongs: recommendedSongs, setPlaylistSongs: setRecommendedSongs }} />
 						</>
 					) : (
 						<></>
