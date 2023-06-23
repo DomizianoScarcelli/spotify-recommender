@@ -41,3 +41,10 @@ export const getSongsFromUri = async (songInfo: RecommendationResponse[]): Promi
 	}
 	return result.map((item) => item.song)
 }
+
+export const getAlbumArt = async (albumUri: string): Promise<string> => {
+	const URL = `${BASE_URL}/album-art?album_uri=${albumUri}`
+	const b64Image = (await axios.get(URL)).data
+	// return `data:image/png;base64${b64Image}`
+	return b64Image
+}

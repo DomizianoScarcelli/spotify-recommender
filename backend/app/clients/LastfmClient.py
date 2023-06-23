@@ -32,4 +32,4 @@ class LastfmClient:
                 f"Image was not found for album: {album_name}")
         image = requests.get(image_url).content
         encoded_image = base64.b64encode(image)
-        return image
+        return encoded_image

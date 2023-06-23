@@ -32,6 +32,11 @@ class SongRepository:
         song = self.collection.find_one({'song_uri': uri}, {'_id': 0})
         return song
 
+    def get_songs_by_album(self, album_uri: str) -> List[Song]:
+        songs = list(self.collection.find(
+            {'album_uri': album_uri}, {'_id': 0}))
+        return songs
+
     def search_song(self, query):
         query_spec = {"song_artist_concat": {
             "$regex": f".*{query}.*", "$options": "i"}}
@@ -71,7 +76,7 @@ class SongRepository:
             songs = self.collection.find()
         return parse_json(songs)
 
-    def get_album_art(self, album_uri: str) -> str:
+    def get_album_art(self, album_uri: str) -> bytes:
         image = self.minio_client.get_object(album_uri)
         return image
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { SongType } from "../shared/types"
 import { TrashIcon } from "../shared/icons"
+import AlbumArt from "./AlbumArt"
 
 type SongListProps = {
 	header: boolean
@@ -74,7 +75,7 @@ const Song = ({ small, index, songDetails, onClick, removeSong }: SongProps) => 
 		>
 			{small ? <></> : <p className="text-spotifyLightGray text-sm w-1/12">{index}</p>}
 			<div className={`flex  ${small ? "flex-1 " : "w-4/12"}  gap-3`}>
-				<img src="https://picsum.photos/50" className="rounded h-50 w-50" />
+				<AlbumArt albumUri={songDetails.album_uri} />
 				<div className={`flex flex-col justify-between ${small ? "truncate" : ""}`}>
 					<p className={`font-medium text-m text-spotifyWhite ${small ? "truncate" : ""}`}>
 						{/* {name.split("").map((char, index) => (
@@ -85,6 +86,7 @@ const Song = ({ small, index, songDetails, onClick, removeSong }: SongProps) => 
 						<p>{name}</p>
 					</p>
 					<p className="font-medium text-sm text-spotifyLightGray">{artist}</p>
+					AL
 				</div>
 			</div>
 			{small ? (

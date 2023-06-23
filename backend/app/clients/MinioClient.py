@@ -1,6 +1,5 @@
 from minio import Minio
 import io
-import json
 ACCESS_KEY = "1eutzGk6yoc3Hf2dOAJ7"
 SECRET_KEY = "d3dCXw9Zxj03mkYDKlZjQEv1zelIMUzD2i3t1t0W"
 
@@ -15,7 +14,7 @@ class MinioClient:
         )
         self.bucket_name = "album-arts"
 
-    def dump_image(self, raw_image: str, album_uri: str):
+    def dump_image(self, raw_image: bytes, album_uri: str):
         try:
             self.client.put_object(
                 bucket_name=self.bucket_name,
@@ -44,8 +43,7 @@ class MinioClient:
             encoded_object = self.client.get_object(
                 self.bucket_name, name).data
 
-            print(str(encoded_object))
-            return str(encoded_object)
+            return encoded_object
         except Exception as e:
             print(f"Error retrieving object names: {str(e)}")
             return b""

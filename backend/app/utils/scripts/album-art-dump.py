@@ -21,5 +21,3 @@ for song in tqdm(all_songs):
     except ImageNotFoundError as e:
         print(
             f"Image wasn't found for the album: {song['album']}, skipping...")
-    except:
-        print("Another error occurred, skipping album...")

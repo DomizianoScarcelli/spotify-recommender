@@ -25,6 +25,12 @@ async def get_song_by_uri(uri: str):
     return {"song": song}
 
 
+@router.get("/get-songs-by-album-uri", tags=["songs"])
+async def get_songs_by_album(uri: str):
+    songs = service.get_songs_by_album(uri)
+    return {"songs": songs}
+
+
 @router.post("/create-song", tags=["songs"])
 async def create_song(data: Song):
     song = service.create_song(data)
