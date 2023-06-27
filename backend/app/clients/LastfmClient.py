@@ -26,6 +26,9 @@ class LastfmClient:
             "format": "json"
         }
         response = requests.get(URL, params=params).json()
+        if "album" not in response:
+            raise ImageNotFoundError(
+                f"Image was not found for album: {album_name}")
         image_url = response["album"]["image"][1]["#text"]
         if image_url == "":
             raise ImageNotFoundError(
