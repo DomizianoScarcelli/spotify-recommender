@@ -15,9 +15,16 @@ css: windicss
     h1{
         color: #1ED760;
     }
+    .slidev-layout table {
+        font-size: 14px !important; /* Adjust the font size as per your preference */
+        width: 30% !important; /* Adjust the table width as per your preference */
+    }
+    .col-right {
+        padding-top: 3rem;
+    }
 </style>
 
-# <logos-spotify class="w-2xl pr-120"/>
+# <logos-spotify class="pr-120 w-2xl"/>
 
 ## Playlist continuation challenge
 
@@ -127,8 +134,33 @@ From here, build a distributed recommender system that given a playlist, it reco
 </v-click>
 
 ---
+layout: two-cols
+css: windicss
+---
 
 # Data Visualization
+
+<!-- <iframe src="/top-songs.html">
+</iframe> -->
+
+| pos   | confidence    |
+|-------|---------------|
+| 505626| 0.86660594    |
+| 338046| 0.8451381     |
+| 256245| 0.8245531     |
+| 669595| 0.81081593    |
+| 174330| 0.78816617    |
+| 592258| 0.7713628     |
+| 589100| 0.7507684     |
+| 170221| 0.73229903    |
+|  87563| 0.7185418     |
+| 585110| 0.71125495    |
+
+::right::
+
+Test
+
+
 
 ---
 
@@ -321,8 +353,19 @@ where $p_i$ is the input concatenated vector, and $\hat{p}_i$ is the reconstruct
 
 $\alpha = 0.5$ is the hyperparameter weighting factor. Balances the importance between observed values ($1$s) and missing values $0$s in the input vector.
 
+Same hyperparameters used by the authors of the paper, but smaller learning rate, since I have a smaller dataset to work with.
+
+
 ---
 
+## Validation
+In order to do _Early Stopping_, and save the model parameters that achieve the best metrics, at the end epoch the model is evaluated on a validation set.
+
+This is done for both the pretraining (tied weights) and training.
+---
+
+# Performance Evaluation
+How is the test set built
 
 
 ---
