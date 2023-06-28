@@ -81,9 +81,13 @@ From here, build a distributed recommender system that given a playlist, it reco
 
 <v-click>
 
-```json {2-11|12-22|23-32|33-42}{maxHeight:'450px'}
+```json {0-6|7-17|18-28|29-38|39-49}{maxHeight:'450px'}
 {
-"metadata": {"bla bla bla"},
+"info": {
+		"generated_on": "2017-12-03 08:41:42.057563",
+		"slice": "0-999",
+		"version": "v1"
+},
 "playlist": {
         "name": "musical",
         "collaborative": "false",
@@ -134,32 +138,8 @@ From here, build a distributed recommender system that given a playlist, it reco
 </v-click>
 
 ---
-layout: two-cols
-css: windicss
----
 
 # Data Visualization
-
-<!-- <iframe src="/top-songs.html">
-</iframe> -->
-
-| pos   | confidence    |
-|-------|---------------|
-| 505626| 0.86660594    |
-| 338046| 0.8451381     |
-| 256245| 0.8245531     |
-| 669595| 0.81081593    |
-| 174330| 0.78816617    |
-| 592258| 0.7713628     |
-| 589100| 0.7507684     |
-| 170221| 0.73229903    |
-|  87563| 0.7185418     |
-| 585110| 0.71125495    |
-
-::right::
-
-Test
-
 
 
 ---
@@ -179,7 +159,6 @@ Test
 How the playlists are encoded
 
 1. Map each song in the playlist to a position.
-
 2. Create the encoding vector:
 - $1$ in the $i$-th position, if the song at position $i$ is in the playlist;
 - $0$ otherwise.
@@ -281,7 +260,15 @@ transition: slide-up
 ```
 
 3. Convert the dictionary into a pyspark `DataFrame`, averaging the values inside of each list
-<img src="/images/ibcf-aggregated.png">
+
+| pos   | confidence    |
+|-------|---------------|
+| 505626| 0.86660594    |
+| 338046| 0.8451381     |
+| 256245| 0.8245531     |
+| 669595| 0.81081593    |
+
+
 
 ---
 
