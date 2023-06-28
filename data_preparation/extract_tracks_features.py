@@ -7,11 +7,12 @@ import ast
 import pandas as pd
 import glob
 
-#TODO: this changes every hour, so build a funciton that fetches it
+# TODO: this changes every hour, so build a funciton that fetches it
 AUTH_TOKEN = "BQCcqo23ViHg5jKJJYLtroSXuntLkbyJal3unKeReP8agVUlICZHyzdpiuupZSY3Glo9Oeov6d-4GF3Lmu9wkKUeaFK5fzDKO9sE0KcJx1yDb-QI1bsk"
 # TODO: change path in order to be relative
 DATA_PATH = "/Users/dov/Desktop/spotify_million_playlist_dataset/data"
 SAVE_PATH = "/Users/dov/Desktop/spotify_million_playlist_dataset/saved"
+
 
 def get_track_audio_feature(track_id):
     """
@@ -21,6 +22,7 @@ def get_track_audio_feature(track_id):
     header = {'Authorization': 'Bearer ' + AUTH_TOKEN}
     res = requests.get(URL, headers=header)
     return res.json()
+
 
 def get_tracks_audio_feature(tracks_ids):
     """
@@ -33,12 +35,14 @@ def get_tracks_audio_feature(tracks_ids):
     res = requests.get(URL, headers=header, params=payload)
     return res.status_code, res.json()
 
+
 def get_tracks_id(path, save_path):
     """
     Retrieves the tracks id from the jsons files that describe the playlists, and saves them in a file
     """
     result = set()
-    file_count = sum(len(files) for _, _, files in os.walk(path))  # Get the number of files
+    file_count = sum(len(files)
+                     for _, _, files in os.walk(path))  # Get the number of files
     with tqdm(total=file_count) as pbar:
         for root, _, files in os.walk(path):
             for file in files:
@@ -47,14 +51,16 @@ def get_tracks_id(path, save_path):
                     content = json.load(f)
                 for playlist in content["playlists"]:
                     for track in playlist["tracks"]:
-                        track_uri = track["track_uri"].replace("spotify:track:", "")
+                        track_uri = track["track_uri"].replace(
+                            "spotify:track:", "")
                         result.add(track_uri)
     set_to_string = ",".join(result)
     with open(save_path, "w") as f:
-       f.write(set_to_string)
+        f.write(set_to_string)
     return result
 
-def extract_N_groups(N = 100):
+
+def extract_N_groups(N=100):
     """
     Creates lists of N in order to group songs in batches, and saves them into a new file
     """
@@ -70,6 +76,7 @@ def extract_N_groups(N = 100):
         f.write(str(N_group_tracks))
     return N_group_tracks
 
+
 def batch_track_list_feature_extraction(N_group_tracks, group_range):
     """
     Given a certain group range, it calls the api for all these song groups in order to extract the audio features
@@ -81,8 +88,10 @@ def batch_track_list_feature_extraction(N_group_tracks, group_range):
         if status_code == 200:
             result[index] = content
         else:
-            raise Exception(f"API call failed with status code: {status_code}, error: {content}")
+            raise Exception(
+                f"API call failed with status code: {status_code}, error: {content}")
     return result
+
 
 def create_tracks_feature_json(step_size=1000):
     """
@@ -92,17 +101,20 @@ def create_tracks_feature_json(step_size=1000):
     def execute_step(group_range):
         try:
             print(f"I'm currently in step: {step} with range: {group_range}")
-            FEATURE_PATH = os.path.join(SAVE_PATH, f"tracks_features_{group_range}.json")
+            FEATURE_PATH = os.path.join(
+                SAVE_PATH, f"tracks_features_{group_range}.json")
             if os.path.exists(FEATURE_PATH):
-                print(f"Path {FEATURE_PATH} already existing, skipping to the next one")
+                print(
+                    f"Path {FEATURE_PATH} already existing, skipping to the next one")
                 return
 
-            result = batch_track_list_feature_extraction(N_group_tracks, group_range=group_range)
+            result = batch_track_list_feature_extraction(
+                N_group_tracks, group_range=group_range)
             with open(FEATURE_PATH, "w") as f:
                 json.dump(result, f)
         except Exception as e:
             print(e)
-    
+
     with open(os.path.join(SAVE_PATH, "N_groups.txt"), "r") as f:
         N_group_tracks = f.read()
         N_group_tracks = ast.literal_eval(N_group_tracks)
@@ -116,7 +128,7 @@ def create_tracks_feature_json(step_size=1000):
         except IndexError as indexError:
             group_range = range(step * step_size, len(N_group_tracks))
             execute_step(group_range)
-           
+
 
 def extract_only_audio_features(dir_path, saved_path):
     """
@@ -130,27 +142,30 @@ def extract_only_audio_features(dir_path, saved_path):
                 try:
                     i = 0
                     while data[str(i)]:
-                        audio_features_list.extend(data[str(i)]['audio_features'])
+                        audio_features_list.extend(
+                            data[str(i)]['audio_features'])
                         i += 1
                 except:
                     pass
                 with open(os.path.join(saved_path, filename[:-5]+'_new.json'), 'w') as new_file:
                     json.dump(audio_features_list, new_file, indent=4)
 
+
 def test_same_number_of_songs(json_path, all_songs_path):
     """
     Test if the number of song in the all_track_features.json is equal to the number of unique songs in the playlists
     """
     all_tracks_features = pd.DataFrame()
-    json_pattern = os.path.join(json_path,'*.json')
+    json_pattern = os.path.join(json_path, '*.json')
     file_list = glob.glob(json_pattern)
-    
+
     dfs = []
     for file in tqdm(file_list, desc="Loading audio features"):
         with open(file) as f:
             json_data = pd.json_normalize(json.loads(f.read()))
         dfs.append(json_data)
-    all_tracks_features = pd.concat(dfs, sort=False) # or sort=True depending on your needs
+    # or sort=True depending on your needs
+    all_tracks_features = pd.concat(dfs, sort=False)
 
     with open(all_songs_path, "r") as f:
         all_songs = f.read().split(",")
@@ -158,6 +173,7 @@ def test_same_number_of_songs(json_path, all_songs_path):
     num_songs_in_features = len(all_tracks_features.index)
     num_all_songs = len(all_songs)
     return abs(num_songs_in_features - num_all_songs)
+
 
 if __name__ == "__main__":
     dir_path = "../../audio_features/track_features/"
