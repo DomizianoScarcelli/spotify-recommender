@@ -2,6 +2,7 @@
 theme: default
 transition: "slide-left"
 css: windicss
+layout: cover
 ---
 
 <style>
