@@ -141,9 +141,55 @@ From here, build a distributed recommender system that given a playlist, it reco
 </v-click>
 
 ---
+css: windicss
+transition: slide-up
+---
+
 
 # Data Visualization
+<div class="flex justify-center">
+    <img class="h-120" src="plots/dark/top_15_songs.png"/>
+</div>
 
+---
+transition: slide-up
+layout: center
+---
+Overall song frequency (Logarithmic Scale)
+
+<img class="h-90" src="plots/Overall%20song%20frequency%20(Log%20Scale).png"/>
+
+---
+transition: slide-up
+layout: center
+---
+
+Overall song frequency (Logarithmic Scale)
+
+<div class="flex justify-center">
+<img class="h-90" src="plots/Overall%20song%20frequency%20(Log%20Scale).png"/>
+</div>
+
+---
+transition: slide-up
+layout: center
+---
+
+Overall song frequency (Logarithmic Scale)
+
+<div class="flex justify-center">
+<img class="h-90" src="plots/Overall%20song%20frequency%20(Log%20Scale).png"/>
+</div>
+
+---
+layout: center
+---
+
+Overall song frequency (Logarithmic Scale)
+
+<div class="flex justify-center">
+<img class="h-90" src="plots/Overall%20song%20frequency%20(Log%20Scale).png"/>
+</div>
 
 ---
 
