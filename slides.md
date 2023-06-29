@@ -16,9 +16,11 @@ css: windicss
         color: #1ED760;
     }
     .slidev-layout table {
-        font-size: 14px !important; /* Adjust the font size as per your preference */
-        width: 30% !important; /* Adjust the table width as per your preference */
+        padding: 1rem, 0, 1rem, 0 !important;
+        font-size: 14px !important;
+        width: 30% !important; 
     }
+
     .col-right {
         padding-top: 3rem;
     }
@@ -154,12 +156,26 @@ From here, build a distributed recommender system that given a playlist, it reco
   
 </v-clicks>
 ---
+transition: slide-up
+---
 
 # User-Based Collaborative Filtering - Data Preparation
 How the playlists are encoded
 
 1. Map each song in the playlist to a position.
+
+| track_uri | pos |
+|-----------|-----|
+| track_1   | 0   |
+| track_10  | 1   |
+| track_11  | 2   |
+
+---
+
 2. Create the encoding vector:
+
+<v-clicks>
+
 - $1$ in the $i$-th position, if the song at position $i$ is in the playlist;
 - $0$ otherwise.
 
@@ -167,10 +183,13 @@ $$
 p = [0,0,0,0,0,1,0,1,0,1]
 $$
 
+This means that the playlit $p$ has the songs with positions $[5, 7, 9]$
+
 Average of 66 songs in a playlist, the vectors 600K dimensional and so they are very sparse (x % spraseness).
 
 Memory efficiency via pyspark's `SparseVector`, which stores only the indices and the values.
 
+</v-clicks>
 ---
 transition: slide-up
 ---
@@ -181,9 +200,35 @@ The pipeline for the recommendation, given the `SparseVector` of a playlist that
 <v-clicks>
 
 1. Compare the playlist with each other playlist, computing the pair-wise similarity using te Jaccard Similarity between their vectors. This will output the similarity value $\in [0,1]$
+
+| track_uri | vector         | input_vector     | similarity |
+|-----------|----------------|------------------|------------|
+| track_1   | indices=1,3,4  | indices=0,2,4,10 | 0.2        |
+| track_10  | indices=4,6,10 | indices=0,2,4,10 | 0.5        |
+| track_11  | indices=3,5    | indices=0,2,4,10 | 0.0        |
+
+</v-clicks>
+
+<v-click>
+
 2. Take the top-$k$ vectors with the highest similarity value;
+
+</v-click>
+
+<v-click>
+
 3. Aggregate the $k$ vectors, averaging them by their similarity value.
+
+</v-click>
+
+
+
+---
+
 4. Normalize the values dividing by the sum of the $k$ similarity values.
+
+<v-clicks>
+
 
 $$
    p_1 = [0,1,1,0,0,1,0] \quad s_1 = 0.3 \\
@@ -192,23 +237,38 @@ $$
 $$
 
 $$
-p_{\text{agg}} = [0.45, 0.3, 1.25, 0, 0.95, 0.3, 0] \\
+p_{\text{agg}} = [0.45, 0.3, 1.25, 0, 0.95, 0.3, 0] \quad s_\text{sum} = 1.25\\
+$$
 
-p_{\text{normalized}} = [0.36, 0.24, 1.0, 0.0, 0.76, 0.24, 0.0]
+$$
+p_{\text{normalized}} = [\color{green}0.36, \color{white}0.24, \color{green}1.0, \color{white}0.0, \color{green}0.76, \color{white}0.24, 0.0]
 $$
 
 </v-clicks>
 
+<v-click>
+
+5. From the normalized aggregated vector, remove the songs that already appears in the input playlist;
+
+</v-click>
+
+<v-click>
+
+6. The top-$n$ indices with the highest values will be the recommended songs;
+
+$$n = 3 \quad \text{recommendations} = \{2: \color{green}1.0, \color{white}4: \color{green}0.76, \color{white}0: \color{green}0.36\}$$
+
+</v-click>
+
+<v-click>
+
+7. Take the `song_uri` of the songs that are mapped into those indices to get the details.
+
+</v-click>
+
+
 ---
-
-$$
-p_{\text{normalized}} = [0.36, 0.24, 1.0, 0.0, 0.76, 0.24, 0.0]
-$$
-
-4. From the normalized aggregated vector, remove the songs that already appears in the input playlist;
-5. The top-$n$ indices with the highest values will be the recommended songs;
-6. Take the `song_uri` of the songs that are mapped into those indices to get the details.
-
+transition: slide-up
 ---
 
 # Item-Based Collaborative Filtering - Data Preparation
@@ -218,7 +278,18 @@ Same principle:
 
 1. Map each playlist into a position.
 
+| pid | pos |
+|-----------|-----|
+| pid_1   | 0   |
+| pid_2  | 1   |
+| pid_3  | 2   |
+
+---
+
 2. Create the encoding vector for each track:
+
+<v-clicks>
+
 - $1$ in the $i$-th position, if the playlist at position $i$ contains the song;
 - $0$ otherwise.
 
@@ -230,6 +301,7 @@ The song $s$ appears in the playlists $5, 7, 9$.
 
 The vector is still very sparse, but its dimensions are 100K instead of 600K (x % spraseness).
 
+</v-clicks>
 ---
 transition: slide-up
 ---
