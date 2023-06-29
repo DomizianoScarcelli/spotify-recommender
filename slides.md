@@ -731,11 +731,11 @@ Evaluation on 1,000 playlists
 <v-clicks>
 
 - User-Based CF
-  - $Rprec = 0.13$, $NDCG = 0.28$
+  - $Rprec = ?$, $NDCG = ?$
 - Item-Based CF:
-  - $Rprec = 0.13$, $NDCG = 0.28$
+  - $Rprec = 0.0847$, $NDCG = 0.242$
 - Denoising Autoencoder:
-  - $Rprec = 0.13$, $NDCG = 0.28$
+  - $Rprec = 0.1315$, $NDCG = ?$
 
 Winners of the challenge:
 - $Rprec = 0.220$, $NDCG = 0.3858$
