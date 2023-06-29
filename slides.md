@@ -562,7 +562,7 @@ transition: slide-up
 
 ## Neural Network Based
 
-Create 3 `DataFrames`:  Train, Evaluation, Test
+Create 3 `DataFrames`:  Train, Validation, Test
 
 Original `DataFrame`
 
@@ -596,7 +596,7 @@ Original `DataFrame`
   </div>
   <div class="flex-1">
 
-    Evaluation Set
+    Validation Set
 
     (500 playlists)
 
@@ -635,13 +635,41 @@ No need to further split the Training set.
 ---
 
 # Evaluation Metrics
-Daje
+Evaluation metrics used for Performance Evaluation
+<v-clicks>
+
+$G$ is the ground truth (tracks in Test set) and $R$ is the set of recommended tracks
+
+- R-precision: ratio between correct and incorrect recommended songs
+$$
+\text{Rprec} = \frac{G \cap R_{1:|G|}}{|G|}
+$$
+
+- Normalized Discounted Gain: how much the correct recommended songs are up in the list
+$$
+NDCG = \frac{DCG}{IDCG} \\
+$$
+- where
+$$
+DCG=rel_1+\sum_{i=2}^{|R|} \frac{r e l_i}{\log _2 i} \quad \text{and} \quad IDC G=1+\sum_{i=2}^{|G \cap R|} \frac{1}{\log _2 i}
+$$
+
+</v-clicks>
 
 ---
 
 # Performance Comparison
 
-Megatop
+<v-clicks>
+
+- User-Based CF
+  - $Rprec = 0.13$, $NDCG = 0.28$
+- Item-Based CF:
+  - $Rprec = 0.13$, $NDCG = 0.28$
+- Denoising Autoencoder:
+  - $Rprec = 0.13$, $NDCG = 0.28$
+
+</v-clicks>
 
 ---
 css: windicss
