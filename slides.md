@@ -363,7 +363,7 @@ css: windicss
 
 <div class="flex justify-center">
     <video width="800" height="400" controls autoplay>
-        <source src='/videos/output.mp4' type="video/mp4">
+        <source src='/videos/demo.mp4' type="video/mp4">
     </video>
 </div>
 
