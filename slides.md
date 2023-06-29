@@ -68,7 +68,14 @@ Sampled 10% of the playlists
 -   100K Playlists
 -   681,805 Unique Songs
 -   110,063 Artists
--   In average, 66 songs per playlist
+  
+</v-clicks>
+
+<v-clicks>
+
+-   In average:
+    -   66 songs per playlist
+    -   38 unique artists per playlist
 
 From here, build a distributed recommender system that given a playlist, it recommend new relevant songs that continuate it.
 
@@ -202,7 +209,7 @@ Top 15 most used words inside playlist titles
 - User-Based Collaborative Filtering;
 - Item-Based Collaborative Filtering;
 - Neural Network Approach: 
-	- Implemented by using a Denoising Autoencoder developed by 	the 2nd place winners of the challenge.
+	- Implemented by using a Denoising Autoencoder developed by the 2nd place solution of the challenge.
   
 </v-clicks>
 ---
@@ -212,6 +219,8 @@ transition: slide-up
 # User-Based Collaborative Filtering - Data Preparation
 How the playlists are encoded
 
+<v-clicks>
+
 1. Map each song in the playlist to a position.
 
 | track_uri | pos |
@@ -220,6 +229,7 @@ How the playlists are encoded
 | track_10  | 1   |
 | track_11  | 2   |
 
+</v-clicks>
 ---
 
 2. Create the encoding vector:
@@ -593,8 +603,6 @@ Original `DataFrame`
     | 1   | indices=4,10,56    |
     | 2   | indices=3,6,8, 10  |
     |-----|--------------------|
-
-        
 
   </div>
   <div class="flex-1">
