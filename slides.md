@@ -310,46 +310,82 @@ transition: slide-up
 
 Given a playlist to continuate, represented as a `DataFrame` containing its songs vectors, the recommendation pipeline is the following:
 
+<v-click>
+
 1. Compute the $k$-nearest-neighbours for each track in the playlist. This will result in a collection of $T$ dataframes, where $|T|$ is the number of songs in the playlist. A dataframe relevant to the track $t$ has a list of $k$ songs, each one with the distance from $t$ in a `distCol` column;
+
+</v-click>
+
+<v-click>
+
 2. Aggregate each Dataframe $\in T$ in order to have a single dataframe.
 Since we are sure that the size of $T$ is not big, I first convert the dataframes into python dictionaries
 ```python
-{track_uri: distance}
+{
+    pos: distance
+}
 ```
 
+</v-click>
 ---
 transition: slide-up
 ---
     
-    The aggregation produce this python dictionary:
+    The aggregation produce a python dictionary like this:
     
 ```json
-{'spotify:track:001BVhvaZTf2icV88rU3DA': [0.0, 0.0], 
-'spotify:track:1iO2inxYIzmPnMuDFfU1Rl': [0.8571428571428572, 0.8571428571428572], 
-'spotify:track:3Ff2kaO1uxXjd9HkHfMw4h': [0.8571428571428572, 0.8571428571428572], 
-'spotify:track:2EhgEpfn3U0lmpryqDujwt': [0.8571428571428572, 0.8571428571428572], 
-'spotify:track:3lkFKOOQRp1AqWk2PPAW6B': [0.8571428571428572, 0.8571428571428572]}
+{
+    34: [0.2], 
+    24: [0.25, 0.45], 
+    102: [0.31, 0.40, 0.36], 
+    314: [0.1], 
+}
 ```
 
 3. Convert the dictionary into a pyspark `DataFrame`, averaging the values inside of each list
 
 | pos   | confidence    |
 |-------|---------------|
-| 505626| 0.86660594    |
-| 338046| 0.8451381     |
-| 256245| 0.8245531     |
-| 669595| 0.81081593    |
+| 34| 0.8  |
+| 24| 0.65     |
+| 102| 0.644    |
+| 314| 0.9    |
 
 
 
 ---
 
 4. Remove from the `DataFrame` the songs that already are in the playlist
+
+<v-clicks>
+
 5. Order the `DataFrame` by ascending distances, and take the top-$n$ tracks as recommendations.
 
+if $n = 3$, recommendations:
+
+| pos   | confidence    |
+|-------|---------------|
+| 314| 0.9    |
+| 34| 0.8  |
+| 24| 0.65     |
+
+</v-clicks>
 ---
 
-## K-Neighbours?
+## K-Neighbours with LSH
+
+<v-clicks>
+
+- Precise $k$-neighbours search is too expensive
+- *Locally Sensitive Hashing* with pyspark's `MinHasLSH` class.
+- Number of hash tables $= 10$
+  - Higher: more precise, less fast
+  - Lower: less precise, faster
+
+We can pre-compute the entire set of $k$-nearest neighbour to be even faster
+
+This takes a long time, but has to be done just once
+</v-clicks>
 
 ---
 css: windicss
@@ -359,12 +395,15 @@ transition: slide-up
 # Neural Network Approach - Introduction
 Solution taken by the "Hello World" team, which classified in 2nd place in the challenge.
 
+<v-clicks>
+
 - Denoising Autoencoder that takes Tracks and Artits
 - Character level CNN that takes playlist's Title.
 - Ensable to make a prediction.
 
 For simplicity, I consider just the Denoising Autoencoder model.
 
+</v-clicks>
 ---
 transition: slide-up
 ---
@@ -374,6 +413,8 @@ transition: slide-up
     <img src="/images/autoencoder.png">
 </div>
 
+<v-clicks>
+
 Input: Concatenation between songs and artists in the playlist, encoded in the following way: 
 
 - **Songs encoding**: the same as User-Based CF;
@@ -381,17 +422,43 @@ Input: Concatenation between songs and artists in the playlist, encoded in the f
 
 It reconstruct the input playlist. The intuition is that songs with high values in the reconstructed vectors are relevant for the input playlist.
 
+</v-clicks>
 ---
 
 ## Noise Generation
 
 Noise to let the model generalize.
 
+<v-clicks>
+
 Training with Hide & Seek technique:
-- Each iteration the song vector or the artist vector are masked.
-- The model can learn intra-relationship between artists and tracks.
+
+$\text{input} = [\underbrace{0,0,1,0,1,1,}_\text{playlist}\underbrace{0,1,0}_\text{artists}]$
+
+Each iteration the song vector or the artist vector are masked.
+
+</v-clicks>
+
+<v-click>
+
+Mask playlist: $\text{input}  [\underbrace{\color{red}0,0,0,0,0,0}_\text{playlist}\underbrace{,\color{green}0,1,0}_\text{artists}]$
+
+</v-click>
+
+<v-click>
+
+Mask artists: $\text{input} = [\underbrace{\color{green}0,0,1,0,1,1}_\text{playlist}\underbrace{,\color{red}0,0,0}_\text{artists}]$
+
+</v-click>
+
+<v-clicks>
+
+The model can learn intra-relationship between artists and tracks.
   
-Dropout with probability that a node is maintained $p \in \mathcal{N} \sim (0.5, 0.8)$ as regularization, and to let the model learn inter-relationship between tracks and between artists.
+Dropout with probability $p$ that a node is kept in the network sampled between $(0.5, 0.8)$  as regularization, and to let the model learn inter-relationship between tracks and between artists.
+
+</v-clicks>
+
 
 ---
 transition: slide-up
@@ -400,6 +467,8 @@ transition: slide-up
 ## Training
 
 _Petastorm_ to generate DataLoader from pyspark `DataFrame`. 
+
+<v-clicks>
 
 At training time, the model is fed with mini-batches of $100$ playlists.
 
@@ -414,6 +483,7 @@ $\alpha = 0.5$ is the hyperparameter weighting factor. Balances the importance b
 
 Same hyperparameters used by the authors of the paper, but smaller learning rate, since I have a smaller dataset to work with.
 
+</v-clicks>
 
 ---
 
@@ -421,11 +491,157 @@ Same hyperparameters used by the authors of the paper, but smaller learning rate
 In order to do _Early Stopping_, and save the model parameters that achieve the best metrics, at the end epoch the model is evaluated on a validation set.
 
 This is done for both the pretraining (tied weights) and training.
+
+---
+transition-slide-up
 ---
 
 # Performance Evaluation
 How is the test set built
 
+<v-clicks>
+
+- Different splits for models with and without training
+- If there is no training, split at track level
+- It there is training, split at row level, and then at track level
+
+</v-clicks>
+
+---
+css: windicss
+---
+
+## User-based and Item-based CF
+
+<v-clicks>
+
+Split at track level (75%, 25%)
+
+Original `DataFrame`
+
+| pid | vector                  |
+|-----|-------------------------|
+| 0   | indices=1,3,4,10,11,23  |
+| 1   | indices=4,6,10,12,34,56 |
+| 2   | indices=3,5,6,8,9,10    |
+
+<div class="flex py-10">
+  <div class="flex-1">
+
+    Training set (75% of the tracks)
+
+    | pid | vector             |
+    |-----|--------------------|
+    | 0   | indices=1,3,10,23  |
+    | 1   | indices=4,10,56    |
+    | 2   | indices=3,6,8, 10  |
+    |-----|--------------------|
+
+        
+
+  </div>
+  <div class="flex-1">
+
+    Test set (25% of the tracks)
+
+    | pid | vector          |
+    |-----|-----------------|
+    | 0   | indices=4,11    |
+    | 1   | indices=6,12,34 |
+    | 2   | indices=5,9     |
+    |-----|-----------------|
+
+  </div>
+</div>
+
+</v-clicks>
+
+---
+transition: slide-up
+---
+
+## Neural Network Based
+
+Create 3 `DataFrames`:  Train, Evaluation, Test
+
+Original `DataFrame`
+
+| pid | vector                      |
+|-----|-----------------------------|
+| 0   | indices=1,3,4,10,11,23      |
+| 1   | indices=4,6,10,12,34,56     |
+| 2   | indices=3,5,6,8,9,10        |
+| 3   | indices=1,2,5,8,10,11       |
+| 4   | indices=0,1,5,8,11,21,34,53 |
+
+---
+
+<v-clicks>
+
+<div class="flex py-10">
+  <div class="flex-1">
+
+    Training Set
+    
+    (98.5K playlists)
+
+    | pid | vector                      |
+    |-----|-----------------------------|
+    | 0   | indices=1,3,4,10,11,23      |
+    | 1   | indices=4,6,10,12,34,56     |
+    | 2   | indices=3,5,6,8,9,10        |
+    |-----|-----------------------------|
+
+        
+  </div>
+  <div class="flex-1">
+
+    Evaluation Set
+
+    (500 playlists)
+
+    | pid | vector                      |
+    |-----|-----------------------------|
+    | 3   | indices=1,2,5,8,10,11       |
+    |-----|-----------------------------|
+
+  </div>
+
+  
+</div>
+
+<div class="flex justify-center">
+
+<div>
+
+    Test Set 
+    
+    (1,000 playlists)
+
+    | pid | vector                      |
+    |-----|-----------------------------|
+    | 4   | indices=0,1,5,8,11,21,34,53 |
+    |-----|-----------------------------|
+  </div>
+
+</div>
+
+Then I split at track level the Evaluation and Test set, in order to compute evaluation metrics
+
+No need to further split the Training set. 
+
+</v-clicks>
+
+---
+
+# Evaluation Metrics
+Daje
+
+---
+
+# Performance Comparison
+
+Megatop
 
 ---
 css: windicss
