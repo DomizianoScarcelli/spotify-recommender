@@ -9,7 +9,12 @@ const AlbumArt = ({ albumUri }: Props) => {
 	useEffect(() => {
 		const retrieveAlbumArt = async () => {
 			const image = await getAlbumArt(albumUri)
-			setAlbumart(image)
+			if (image === "") {
+				const STOCK_PHOTO = "https://picsum.photos/65"
+				setAlbumart(STOCK_PHOTO)
+			} else {
+				setAlbumart(`data:image/png;base64,${image}`)
+			}
 		}
 		retrieveAlbumArt()
 	}, [albumUri])
@@ -17,7 +22,7 @@ const AlbumArt = ({ albumUri }: Props) => {
 	useEffect(() => {
 		if (albumArt != "") console.log("ALBUM ART DEBUG: ", albumArt)
 	}, [albumArt])
-	return <img className="rounded h-50 w-50" src={`data:image/png;base64,${albumArt}`} alt="Base64 Image" />
+	return <img className="rounded h-50 w-50" src={albumArt} alt="Base64 Image" />
 }
 
 export default AlbumArt

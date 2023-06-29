@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { SongType } from "../shared/types"
-import { TrashIcon } from "../shared/icons"
+import { TrashIcon, SparklerIcon } from "../shared/icons"
 import AlbumArt from "./AlbumArt"
 
 type SongListProps = {
@@ -8,9 +8,10 @@ type SongListProps = {
 	small: boolean
 	songs?: SongType[]
 	playlistState: { playlistSongs: SongType[]; setPlaylistSongs: any }
+	recommended: boolean
 }
 
-const SongList = ({ header, small, songs, playlistState }: SongListProps) => {
+const SongList = ({ header, small, songs, playlistState, recommended }: SongListProps) => {
 	const { playlistSongs, setPlaylistSongs } = playlistState
 
 	const handleClick = (song: SongType) => {
@@ -32,7 +33,7 @@ const SongList = ({ header, small, songs, playlistState }: SongListProps) => {
 			{header ? <Header /> : null}
 			<li className="flex flex-col pt-3 whitespace-nowrap overflow-hidden">
 				{songs?.map((song, index) => (
-					<Song small={small} songDetails={song} index={index + 1} key={index} onClick={handleClick} removeSong={removeSongFromPlaylist} />
+					<Song small={small} songDetails={song} index={index + 1} key={index} onClick={handleClick} removeSong={removeSongFromPlaylist} recommended={recommended} />
 				))}
 			</li>
 		</>
@@ -45,12 +46,10 @@ type SongProps = {
 	songDetails: SongType
 	onClick: (song: SongType) => void
 	removeSong: (song: SongType) => void
+	recommended: boolean
 }
-const Song = ({ small, index, songDetails, onClick, removeSong }: SongProps) => {
+const Song = ({ small, index, songDetails, onClick, removeSong, recommended }: SongProps) => {
 	const { name, artist, album, duration, matchingPositions } = songDetails
-	useEffect(() => {
-		console.log(songDetails)
-	}, [])
 	const [hover, setHover] = useState<boolean>(false)
 
 	// Function to check if a character index is in the matchingCharacters array
@@ -85,8 +84,14 @@ const Song = ({ small, index, songDetails, onClick, removeSong }: SongProps) => 
 						))} */}
 						<p>{name}</p>
 					</p>
-					<p className="font-medium text-sm text-spotifyLightGray">{artist}</p>
-					AL
+					{recommended ? (
+						<div className="flex gap-2">
+							<SparklerIcon className="bg-spotifyGreen rounded h-4 p-[2px] w-4" />
+							<p className="font-medium text-sm text-spotifyLightGray">{artist}</p>
+						</div>
+					) : (
+						<p className="font-medium text-sm text-spotifyLightGray">{artist}</p>
+					)}
 				</div>
 			</div>
 			{small ? (
