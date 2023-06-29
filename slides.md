@@ -54,6 +54,8 @@ Recommender System for Playlist Continuation
 
 Playlists created by users from 2010 to 2017
 
+A song recommender is an essential feature to enable an easy discoverability of new songs.
+
 </v-clicks>
 ---
 
@@ -64,8 +66,9 @@ Sampled 10% of the playlists
 <v-clicks>
 
 -   100K Playlists
--   600K Unique Songs
--   100K Artists
+-   681,805 Unique Songs
+-   110,063 Artists
+-   In average, 66 songs per playlist
 
 From here, build a distributed recommender system that given a playlist, it recommend new relevant songs that continuate it.
 
@@ -148,26 +151,26 @@ transition: slide-up
 
 # Data Visualization
 <div class="flex justify-center">
-    <img class="h-120" src="plots/dark/top_15_songs.png"/>
+    <img class="w-full" src="plots/dark/top_10_songs.png"/>
 </div>
 
 ---
 transition: slide-up
 layout: center
 ---
-Overall song frequency (Logarithmic Scale)
+Songs Frequency (Logarithmic scale)
 
-<img class="h-90" src="plots/Overall%20song%20frequency%20(Log%20Scale).png"/>
+<img class="w-full" src="plots/dark/all_songs_frequency_log.png"/>
 
 ---
 transition: slide-up
 layout: center
 ---
 
-Overall song frequency (Logarithmic Scale)
+Frequency of songs that appear in less that 100 playlists (Logarithmic Scale)
 
 <div class="flex justify-center">
-<img class="h-90" src="plots/Overall%20song%20frequency%20(Log%20Scale).png"/>
+<img class="w-full" src="plots/dark/major_songs_frequency_log.png"/>
 </div>
 
 ---
@@ -175,20 +178,20 @@ transition: slide-up
 layout: center
 ---
 
-Overall song frequency (Logarithmic Scale)
+Most popular artists
 
 <div class="flex justify-center">
-<img class="h-90" src="plots/Overall%20song%20frequency%20(Log%20Scale).png"/>
+<img class="h-90" src="plots/dark/most_popular_artists.png"/>
 </div>
 
 ---
 layout: center
 ---
 
-Overall song frequency (Logarithmic Scale)
+Top 15 most used words inside playlist titles
 
 <div class="flex justify-center">
-<img class="h-90" src="plots/Overall%20song%20frequency%20(Log%20Scale).png"/>
+<img class="h-90" src="plots/dark/top_15_words.png"/>
 </div>
 
 ---
@@ -232,7 +235,7 @@ $$
 
 This means that the playlit $p$ has the songs with positions $[5, 7, 9]$
 
-Average of 66 songs in a playlist, the vectors 600K dimensional and so they are very sparse (x % spraseness).
+Average of 66 songs in a playlist, the vectors are 681,805 dimensional and so they are very sparse ($99.9903\%$ sparseness).
 
 Memory efficiency via pyspark's `SparseVector`, which stores only the indices and the values.
 
@@ -267,8 +270,6 @@ The pipeline for the recommendation, given the `SparseVector` of a playlist that
 3. Aggregate the $k$ vectors, averaging them by their similarity value.
 
 </v-click>
-
-
 
 ---
 
@@ -311,6 +312,8 @@ $$n = 3 \quad \text{recommendations} = \{2: \color{green}1.0, \color{white}4: \c
 
 7. Take the `song_uri` of the songs that are mapped into those indices to get the details.
 
+
+The entire process takes about 30 seconds.
 </v-click>
 
 
@@ -346,7 +349,8 @@ $$
 
 The song $s$ appears in the playlists $5, 7, 9$.
 
-The vector is still very sparse, but its dimensions are 100K instead of 600K (x % spraseness).
+The vector is still very sparse, but its dimensionality is 110,063 instead of 681,805.
+There are in average 38 artists in each playlist, so we have a degree of sparseness of $99,965\%$ (w.r.t. $99.9903\%$ of the user-based cf).
 
 </v-clicks>
 ---
@@ -416,6 +420,7 @@ if $n = 3$, recommendations:
 | 34| 0.8  |
 | 24| 0.65     |
 
+The entire process takes about 30 seconds.
 </v-clicks>
 ---
 
@@ -530,6 +535,8 @@ $\alpha = 0.5$ is the hyperparameter weighting factor. Balances the importance b
 
 Same hyperparameters used by the authors of the paper, but smaller learning rate, since I have a smaller dataset to work with.
 
+The whole training (pretrain + train) took about 12 hours on CUDA GPUs.
+
 </v-clicks>
 
 ---
@@ -537,8 +544,11 @@ Same hyperparameters used by the authors of the paper, but smaller learning rate
 ## Validation
 In order to do _Early Stopping_, and save the model parameters that achieve the best metrics, at the end epoch the model is evaluated on a validation set.
 
+<v-click>
+
 This is done for both the pretraining (tied weights) and training.
 
+</v-click>
 ---
 transition-slide-up
 ---
