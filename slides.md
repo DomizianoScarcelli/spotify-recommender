@@ -28,7 +28,8 @@ css: windicss
 
 # <logos-spotify class="pr-120 w-2xl"/>
 
-## Playlist continuation challenge
+<h1 class="text-gray-100">Million Playlist Challenge</h1>
+<p>by Domiziano Scarcelli - 1872664</p>
 
 ---
 
@@ -660,6 +661,8 @@ $$
 
 # Performance Comparison
 
+Evaluation on 1,000 playlists
+
 <v-clicks>
 
 - User-Based CF
@@ -669,6 +672,9 @@ $$
 - Denoising Autoencoder:
   - $Rprec = 0.13$, $NDCG = 0.28$
 
+Winners of the challenge:
+- $Rprec = 0.220$, $NDCG = 0.3858$
+	
 </v-clicks>
 
 ---
@@ -682,4 +688,36 @@ css: windicss
         <source src='/videos/demo.mp4' type="video/mp4">
     </video>
 </div>
+
+---
+css: windicss
+---
+
+<div class="flex flex-col justify-between items-center h-full w-full">
+<div class="flex justify-center items-center flex-1">
+<h1>
+Thank you for the attention
+</h1>
+</div>
+
+<div class="flex flex-col justify-start items-start w-full">
+
+<h4>
+References
+</h4>
+
+<ul>
+<li>
+<a href="https://www.aicrowd.com/challenges/spotify-million-playlist-dataset-challenge">AIcrowd Spotify Million Playlist Challenge.</a>
+</li>
+<li>
+<a href="url">hello world! [Yang et al.]</a>
+</li>
+</ul>
+
+
+</div>
+
+</div>
+
 
