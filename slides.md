@@ -618,7 +618,7 @@ Noise to let the model generalize.
 
 Training with Hide & Seek technique:
 
-$\text{input} = [\underbrace{0,0,1,0,1,1,}_\text{playlist}\underbrace{0,1,0}_\text{artists}]$
+$\text{input} = [\underbrace{0,0,1,0,1,1,}_\text{songs}\underbrace{0,1,0}_\text{artists}]$
 
 Each iteration the song vector or the artist vector are masked.
 
@@ -626,13 +626,13 @@ Each iteration the song vector or the artist vector are masked.
 
 <v-click>
 
-Mask playlist: $\text{input}  [\underbrace{\color{red}0,0,0,0,0,0}_\text{playlist}\underbrace{,\color{green}0,1,0}_\text{artists}]$
+Mask playlist: $\text{input}  [\underbrace{\color{red}0,0,0,0,0,0}_\text{songs}\underbrace{,\color{green}0,1,0}_\text{artists}]$
 
 </v-click>
 
 <v-click>
 
-Mask artists: $\text{input} = [\underbrace{\color{green}0,0,1,0,1,1}_\text{playlist}\underbrace{,\color{red}0,0,0}_\text{artists}]$
+Mask artists: $\text{input} = [\underbrace{\color{green}0,0,1,0,1,1}_\text{songs}\underbrace{,\color{red}0,0,0}_\text{artists}]$
 
 </v-click>
 
@@ -664,7 +664,7 @@ $$
 
 where $p_i$ is the input concatenated vector, and $\hat{p}_i$ is the reconstructed vector.
 
-$\alpha = 0.5$ is the hyperparameter weighting factor. Balances the importance between observed values ($1$s) and missing values $0$s in the input vector.
+$\alpha = 0.5$ is the hyperparameter weighting factor. Balances the importance between observed values ($1$s) and missing values $0$s in the vector.
 
 Same hyperparameters used by the authors of the paper, but smaller learning rate, since I have a smaller dataset to work with.
 
