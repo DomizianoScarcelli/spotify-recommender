@@ -852,19 +852,53 @@ $$
 
 Evaluation on 1,000 playlists
 
-<v-clicks>
+<v-click>
 
 - User-Based CF
   - $Rprec = 0.1242$, $NDCG = 0.3041$
+
+</v-click>
+
+<v-click>
+
 - Item-Based CF:
   - 10 Hash Tables: $Rprec = 0.0847$, $NDCG = 0.242$
   - 20 Hash Tables: $Rprec = $, $NDCG = $
+
+</v-click>
+
+<v-click>
+
 - Denoising Autoencoder:
   - $Rprec = 0.1327$, $NDCG = 0.334$
 
+</v-click>
+
+<v-click>
+
 Winners of the challenge:
 - $Rprec = 0.220$, $NDCG = 0.3858$
-	
+
+</v-click>
+
+<v-click>
+
+User-Based better than Item-Based because of lower sparsity!
+
+</v-click>
+
+---
+
+# Conclusions
+
+In general both User-Based and Neural Netork Based have good performances.
+<v-clicks>
+
+- User-Based, even if simple, has good results;
+- Item-Based could have done better if less sparsity;
+- Denoising Autoencoder could have learnt better patterns if less unpopular songs. 
+  - Better than all the others because of faster inference time.
+
 </v-clicks>
 
 ---
