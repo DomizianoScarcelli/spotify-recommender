@@ -855,7 +855,7 @@ Evaluation on 1,000 playlists
 <v-clicks>
 
 - User-Based CF
-  - $Rprec = ?$, $NDCG = ?$
+  - $Rprec = 0.1242$, $NDCG = 0.3041$
 - Item-Based CF:
   - 10 Hash Tables: $Rprec = 0.0847$, $NDCG = 0.242$
   - 20 Hash Tables: $Rprec = $, $NDCG = $
