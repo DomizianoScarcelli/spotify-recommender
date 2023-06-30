@@ -33,16 +33,12 @@ title: <logos-spotify class="pr-120 w-2xl"/>
 <h1 class="text-gray-100">Million Playlist Challenge</h1>
 <p>by Domiziano Scarcelli - 1872664</p>
 
-<!--
-Test
--->
-
 ---
 
 # Introduction
 Recommender System for Playlist Continuation
 
-- Started in 2018
+- Challenge started in 2018
 - Hosted on AIcrowd
 - More than 1000 submissions
 
@@ -89,7 +85,7 @@ Sampled 10% of the playlists
     -   66 songs per playlist
     -   38 unique artists per playlist
 
-From here, build a distributed recommender system that given a playlist, it recommend new relevant songs that continuate it.
+From here, build a distributed recommender system that given a playlist, it recommends new relevant songs that continuate it.
 
 </v-clicks>
 
@@ -136,7 +132,7 @@ Frequency of songs that appear in less that 100 playlists (Logarithmic Scale)
 <img class="w-full" src="plots/dark/major_songs_frequency_log.png"/>
 </div>
 
-Actually, in average each song appears in only 10 playlists!
+In average each song appears in only 10 playlists!
 
 <!--
 We can zoom on the frequency of the songs that appear in less than 100 playlist, and we'll notice that actually most of the songs appear just in a few playlists. This would surely be a problem for simple recommendation algorithms, since those songs won't probably never be recommended.
@@ -449,7 +445,7 @@ The song $s$ appears in the playlists $5, 7, 9$.
 
 The vector is still very sparse, but its dimensionality is 110,063 instead of 681,805.
 
-Since a playlist appears in an average of $10$ playlists, we have a degree of sparseness of $0.99991\%$ (w.r.t. $99.9903\%$ of the user-based cf).
+Since a playlist appears in an average of $10$ playlists, we have a degree of sparseness of $99.9909\%$ (w.r.t. $99.9903\%$ of the user-based cf).
 
 </v-clicks>
 
@@ -467,7 +463,7 @@ Given a playlist to continuate, represented as a `DataFrame` containing its song
 
 <v-click>
 
-1. Compute the $k$-nearest-neighbours for each track in the playlist. This will result in a collection of $T$ dataframes, where $|T|$ is the number of songs in the playlist. A dataframe relevant to the track $t$ has a list of $k$ songs, each one with the distance from $t$ in a `distCol` column;
+1. Compute the $k$-nearest-neighbours for each track in the playlist. This will result in a collection of $T$ dataframes, where $|T|$ is the number of songs in the playlist. A dataframe relevant to the track $t$ has a list of $k$ songs, each one with the distance from $t$ in a separated column;
 
 </v-click>
 
@@ -504,7 +500,7 @@ The aggregation produce a python dictionary like this:
 | track_uri_1 | 0.2      |
 | track_uri_2 | 0.35     |
 | track_uri_3 | 0.356    |
-| track_uri_4 | 0.9      |
+| track_uri_4 | 0.1      |
 
 <!--
 Aggregate each Dataframe $\in T$ in order to have a single dataframe.
@@ -524,12 +520,13 @@ if $n = 3$, recommendations:
 
 | track_uri   | distance |
 |-------------|----------|
+| track_uri_4 | 0.1      |
 | track_uri_1 | 0.2      |
 | track_uri_2 | 0.35     |
 | track_uri_3 | 0.356    |
-| track_uri_4 | 0.9      |
 
 The entire process takes about 30 to 60 seconds.
+
 </v-clicks>
 
 <!--
@@ -550,9 +547,9 @@ Before performing the recommendation, we remove from the dataset the songs that 
   - Higher: more precise, less fast
   - Lower: less precise, faster
 
-We can pre-compute the entire set of $k$-nearest neighbour to be even faster
+We can pre-compute the entire set of $k$-nearest neighbour to be even faster.
 
-This takes a long time, but has to be done just once
+This takes a long time, but has to be done just once.
 </v-clicks>
 
 <!--
