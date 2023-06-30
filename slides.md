@@ -860,7 +860,7 @@ Evaluation on 1,000 playlists
 
 - Item-Based CF:
   - 10 Hash Tables: $Rprec = 0.0847$, $NDCG = 0.242$
-  - 20 Hash Tables: $Rprec = 0.0868$, $NDCG = 0.258$
+  - 20 Hash Tables: $Rprec = 0.0897$, $NDCG = 0.261$
 
 </v-click>
 
