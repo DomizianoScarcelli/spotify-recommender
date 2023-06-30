@@ -1,8 +1,9 @@
 ---
 theme: default
-transition: "slide-left"
+transition: slide-left
 css: windicss
 layout: cover
+title: <logos-spotify class="pr-120 w-2xl"/>
 ---
 
 <style>
@@ -32,6 +33,10 @@ layout: cover
 <h1 class="text-gray-100">Million Playlist Challenge</h1>
 <p>by Domiziano Scarcelli - 1872664</p>
 
+<!--
+Test
+-->
+
 ---
 
 # Introduction
@@ -58,8 +63,14 @@ Playlists created by users from 2010 to 2017
 A song recommender is an essential feature to enable an easy discoverability of new songs.
 
 </v-clicks>
----
 
+<!--
+The Spotify Million Playlist challenge was hosted on AIcrowd and in 2018 and consists in taking a dataset of 1 Million playlists, in order to build a recommender system that will continuate the playlist with coherent tracks. It has gotten more than 1000 submissions.
+
+There are a total of 63 million tracks, with 2 million unique ones and more than 300K artists. The playlists were taken from spotify, and they where created by users January 2010 and October 2017.
+-->
+
+---
 
 # Reduced Dataset
 
@@ -81,6 +92,104 @@ Sampled 10% of the playlists
 From here, build a distributed recommender system that given a playlist, it recommend new relevant songs that continuate it.
 
 </v-clicks>
+
+<!--
+Due to hardware limitations I couldn't work with the full dataset, so I sampled the 10% of it, and worked with 100k playlists. The total number of unique songs becomes around 600k, with 100k artists.
+The aim of this project was to build different recommenders systems using pyspark in order to treat the data in a  distributed manner, and see how the performances kept up with the most advanced techniques by the winners of the challenge.
+-->
+
+---
+css: windicss
+transition: slide-up
+---
+
+# Data Visualization
+<div class="flex justify-center">
+    <img class="w-full" src="plots/dark/top_10_songs.png"/>
+</div>
+
+<!--
+Before diving into the models, we can visualize the data a little bit. Here we can see the top most common songs, which are Humble by Kendrick Lamar and One Dance by Drake.
+-->
+
+---
+transition: slide-up
+layout: center
+---
+
+Songs Frequency (Logarithmic scale)
+
+<img class="w-full" src="plots/dark/all_songs_frequency_log.png"/>
+
+<!--
+If we analyze how many times a song appear In a playlist, we notice that most of the songs are unpopular, meaning that 662K songs out of 680K appear in less than 100 playlists.
+-->
+
+---
+transition: slide-up
+layout: center
+---
+
+Frequency of songs that appear in less that 100 playlists (Logarithmic Scale)
+
+<div class="flex justify-center">
+<img class="w-full" src="plots/dark/major_songs_frequency_log.png"/>
+</div>
+
+Actually, in average each song appears in only 10 playlists!
+
+<!--
+We can zoom on the frequency of the songs that appear in less than 100 playlist, and we'll notice that actually most of the songs appear just in a few playlists. This would surely be a problem for simple recommendation algorithms, since those songs won't probably never be recommended.
+-->
+
+---
+transition: slide-up
+layout: center
+---
+
+Most popular artists
+
+<div class="flex justify-center">
+<img class="h-90" src="plots/dark/most_popular_artists.png"/>
+</div>
+
+<!--
+We can also plot a pie chart describing the most popular artist. From here we can see that hip-hop is probably the most popular genre.
+-->
+
+---
+layout: center
+---
+
+Top 15 most used words inside playlist titles
+
+<div class="flex justify-center">
+<img class="h-90" src="plots/dark/top_15_words.png"/>
+</div>
+
+<!--
+From the histogram that describes the distribution of words used in the playlist titles, we can see that there are a lot of country playlists.
+-->
+
+---
+
+# Developed Systems
+<v-clicks>
+  
+- User-Based Collaborative Filtering;
+- Item-Based Collaborative Filtering;
+- Neural Network Approach: 
+	- Implemented by using a Denoising Autoencoder developed by the 2nd place solution of the challenge.
+  
+</v-clicks>
+
+<!--
+The models that I developed are three:
+- User-Based Collaborative Filtering, considering the playlist as an user to which make the recommendation
+- Item-Based Collaborative Filtering, considering the songs as items.
+- Denoising AutoEncoder: I took the solution of one of the top solutions of the challenge, and adapt it in order to use the data in a distributed manner.
+-->
+
 ---
 
 # How was the data structured
@@ -151,68 +260,14 @@ From here, build a distributed recommender system that given a playlist, it reco
 ```
 </v-click>
 
----
-css: windicss
-transition: slide-up
----
+<!--
+Before diving into the details of each method, let's see how the data was prepared. The dataset is split into 1000 different json files, each one with this structure.
 
+First of all I removed the file info in the header, since it was useless. Then we can see that for each playlist we have many details, such as the `pid`, the number of albums and tracks, the duration and the different tracks. For each tracks we have the song, album and artist uri, other than their name, along with some other information like the position in the playlist and the duration.
 
-# Data Visualization
-<div class="flex justify-center">
-    <img class="w-full" src="plots/dark/top_10_songs.png"/>
-</div>
+Using pyspark I could load all the different json files into a single DataFrame.
+-->
 
----
-transition: slide-up
-layout: center
----
-Songs Frequency (Logarithmic scale)
-
-<img class="w-full" src="plots/dark/all_songs_frequency_log.png"/>
-
----
-transition: slide-up
-layout: center
----
-
-Frequency of songs that appear in less that 100 playlists (Logarithmic Scale)
-
-<div class="flex justify-center">
-<img class="w-full" src="plots/dark/major_songs_frequency_log.png"/>
-</div>
-
----
-transition: slide-up
-layout: center
----
-
-Most popular artists
-
-<div class="flex justify-center">
-<img class="h-90" src="plots/dark/most_popular_artists.png"/>
-</div>
-
----
-layout: center
----
-
-Top 15 most used words inside playlist titles
-
-<div class="flex justify-center">
-<img class="h-90" src="plots/dark/top_15_words.png"/>
-</div>
-
----
-
-# Developed Systems
-<v-clicks>
-  
-- User-Based Collaborative Filtering;
-- Item-Based Collaborative Filtering;
-- Neural Network Approach: 
-	- Implemented by using a Denoising Autoencoder developed by the 2nd place solution of the challenge.
-  
-</v-clicks>
 ---
 transition: slide-up
 ---
@@ -231,6 +286,13 @@ How the playlists are encoded
 | track_11  | 2   |
 
 </v-clicks>
+
+<!--
+Let's start with the first method, the User-Based Collaborative Filtering.
+
+First I mapped each track to a position, this will be useful later.
+-->
+
 ---
 
 2. Create the encoding vector:
@@ -244,13 +306,20 @@ $$
 p = [0,0,0,0,0,1,0,1,0,1]
 $$
 
-This means that the playlit $p$ has the songs with positions $[5, 7, 9]$
+This means that the playlist $p$ has the songs with positions $[5, 7, 9]$
 
 Average of 66 songs in a playlist, the vectors are 681,805 dimensional and so they are very sparse ($99.9903\%$ sparseness).
 
 Memory efficiency via pyspark's `SparseVector`, which stores only the indices and the values.
 
 </v-clicks>
+
+<!--
+Then I encoded each playlist into a binary vector, where a $1$ in position $i$ means that the song that has mapped the position $i$ is present in the playlist.
+
+Since there are an average of $66$ songs per playlist, and a total of 600k unique tracks, the 600k dimensional vector will be very sparse. This is a common problem for User-Based CF, but is good for memory efficiency since it's possible to encode it into a pyspark `SparseVector`.
+-->
+
 ---
 transition: slide-up
 ---
@@ -281,6 +350,13 @@ The pipeline for the recommendation, given the `SparseVector` of a playlist that
 3. Aggregate the $k$ vectors, averaging them by their similarity value.
 
 </v-click>
+
+<!--
+Now, given a SparseVector as the encoding for the input playlists, that is the playlist to continuate, the pipeline is the following:
+1. I compare the playlist with each other playlist, computing the pair-wise similarity using te Jaccard Similarity between their vectors. This will output a value between 0 and 1, the higher the better.
+2. I take the top-$k$ most similar playlists, where $k$ is an hyperparameter.
+3. I aggregate the $k$ playlist vectors, weighting them by their respective similarity value.
+-->
 
 ---
 
@@ -327,6 +403,11 @@ $$n = 3 \quad \text{recommendations} = \{2: \color{green}1.0, \color{white}4: \c
 The entire process takes about 30 seconds.
 </v-click>
 
+<!--
+I then normalize the values dividing them by the sum of the $k$ similarity values.
+5. From the resulting vector, I set to 0 the position that have a $1$ in the input vector, in order to avoid recommending songs that are already in the playlist.
+6.  The top-n indices with the highest values in the vector will be the positions of the n recommendations. I can just take the spotify uri that is mapped to that position in order to have all the details about the recommendation.
+-->
 
 ---
 transition: slide-up
@@ -345,6 +426,12 @@ Same principle:
 | pid_2  | 1   |
 | pid_3  | 2   |
 
+<!--
+User based collaborative filtering has some problems, like very high sparseness of the embeddings, and the fact that it suffers from aging very quickly. Let's see how the item-based CF solves those problems:
+
+First of all I map each playlist to a position, just like it was done before with tracks.
+-->
+
 ---
 
 2. Create the encoding vector for each track:
@@ -361,9 +448,15 @@ $$
 The song $s$ appears in the playlists $5, 7, 9$.
 
 The vector is still very sparse, but its dimensionality is 110,063 instead of 681,805.
-There are in average 38 artists in each playlist, so we have a degree of sparseness of $99,965\%$ (w.r.t. $99.9903\%$ of the user-based cf).
+
+Since a playlist appears in an average of $10$ playlists, we have a degree of sparseness of $0.99991\%$ (w.r.t. $99.9903\%$ of the user-based cf).
 
 </v-clicks>
+
+<!--
+This time I have to encode tracks instead of playlists. The encoding follows the same principle of the one done by the playlist. An item is encoded in a $d$-dimensional vector, where $d$ is the number of unique playlists (100k) in the dataset. In the position $i$ there is a $1$ if the song is present in the playlist encoded with the position $i$.
+-->
+
 ---
 transition: slide-up
 ---
@@ -384,7 +477,7 @@ Given a playlist to continuate, represented as a `DataFrame` containing its song
 Since we are sure that the size of $T$ is not big, I first convert the dataframes into python dictionaries
 ```python
 {
-    pos: distance
+    track_uri: distance
 }
 ```
 
@@ -392,28 +485,32 @@ Since we are sure that the size of $T$ is not big, I first convert the dataframe
 ---
 transition: slide-up
 ---
-    
-    The aggregation produce a python dictionary like this:
+
+The aggregation produce a python dictionary like this:
     
 ```json
 {
-    34: [0.2], 
-    24: [0.25, 0.45], 
-    102: [0.31, 0.40, 0.36], 
-    314: [0.1], 
+    track_uri_1: [0.2], 
+    track_uri_2: [0.25, 0.45], 
+    track_uri_3: [0.31, 0.40, 0.36], 
+    track_uri_4: [0.1], 
 }
 ```
 
 3. Convert the dictionary into a pyspark `DataFrame`, averaging the values inside of each list
 
-| pos   | confidence    |
-|-------|---------------|
-| 34| 0.8  |
-| 24| 0.65     |
-| 102| 0.644    |
-| 314| 0.9    |
+| track_uri   | distance |
+|-------------|----------|
+| track_uri_1 | 0.2      |
+| track_uri_2 | 0.35     |
+| track_uri_3 | 0.356    |
+| track_uri_4 | 0.9      |
 
-
+<!--
+Aggregate each Dataframe $\in T$ in order to have a single dataframe.
+	   Since we are sure that the size of $T$ is not big, I first convert the dataframes into python dictionaries. The aggregation works in this way: for each song in the collection, I put as key the track_uri of that song, and for values a list of all the distances where the song appear. So we will obtain some dictionary like that.
+	1. Then we can transform the dictionary back into a pyspark dataframe, averaging the distances inside each list.
+	2. -->
 
 ---
 
@@ -425,14 +522,22 @@ transition: slide-up
 
 if $n = 3$, recommendations:
 
-| pos   | confidence    |
-|-------|---------------|
-| 314| 0.9    |
-| 34| 0.8  |
-| 24| 0.65     |
+| track_uri   | distance |
+|-------------|----------|
+| track_uri_1 | 0.2      |
+| track_uri_2 | 0.35     |
+| track_uri_3 | 0.356    |
+| track_uri_4 | 0.9      |
 
-The entire process takes about 30 seconds.
+The entire process takes about 30 to 60 seconds.
 </v-clicks>
+
+<!--
+Before performing the recommendation, we remove from the dataset the songs that already appear inside of the input playlist, in order to not recommend them.
+
+ We recommend the $n$ tracks by ordering the dataframe in ascending order by distance, and taking the top-$n$ tracks with the lowest distance.
+-->
+
 ---
 
 ## K-Neighbours with LSH
@@ -440,8 +545,8 @@ The entire process takes about 30 seconds.
 <v-clicks>
 
 - Precise $k$-neighbours search is too expensive
-- *Locally Sensitive Hashing* with pyspark's `MinHasLSH` class.
-- Number of hash tables $= 10$
+- *Locally Sensitive Hashing* with pyspark's `MinHashLSH` class.
+- Number of hash tables $= 20$
   - Higher: more precise, less fast
   - Lower: less precise, faster
 
@@ -449,6 +554,13 @@ We can pre-compute the entire set of $k$-nearest neighbour to be even faster
 
 This takes a long time, but has to be done just once
 </v-clicks>
+
+<!--
+Since there are in average 66 songs in each playlist, and we have to find the $k$ neihbours for each one of them, the precise neighbour search is too expensive. For this I decided to use an approximate search using a Locally Sensitive Hashing algorithm, implemented by pyspark's `MinHashLSH`.
+Regarding the number of hash tables, the higher the number, the more precise but less fast; the lower, the less precise but the faster the algorithm is. I tried with both 10 and 20 as values, we will see the results later.
+
+In order to reduce the algorithm inference time, we can pre-compute the list of k-neighbours for each song in advance. This is surely a great idea, but I didn't do it since it took something like a week.
+-->
 
 ---
 css: windicss
@@ -467,6 +579,11 @@ Solution taken by the "Hello World" team, which classified in 2nd place in the c
 For simplicity, I consider just the Denoising Autoencoder model.
 
 </v-clicks>
+
+<!--
+The second place solution of the official spotify challenge was taken by a team called Hello World, which built a recommender system using an ensamble made out of a Denoising Autoencoder, that tries to reconstruct the playlist, and a Character Level CNN in order to recommend songs from the playlist title. For simplicity, I only tried to replicate the Autoencoder part.
+-->
+
 ---
 transition: slide-up
 ---
@@ -486,6 +603,14 @@ Input: Concatenation between songs and artists in the playlist, encoded in the f
 It reconstruct the input playlist. The intuition is that songs with high values in the reconstructed vectors are relevant for the input playlist.
 
 </v-clicks>
+
+<!--
+The autoencoder works in this way:
+It takes in input the vector encoding of the songs in the playlist, and the artists. The song vector is built exactly as for the other models, and the artist vector follows the same principle, meaning there is a $1$ in the position $i$ if the artist $i$ appears inside of the playlist, $0$ otherwise.
+
+It's trained to reconstruct the input playlist. The intuition is that songs with high values in the reconstructed vectors are relevant for the input playlist.
+-->
+
 ---
 
 ## Noise Generation
@@ -711,13 +836,12 @@ $$
 \text{Rprec} = \frac{G \cap R_{1:|G|}}{|G|}
 $$
 
-- Normalized Discounted Gain: how much the correct recommended songs are up in the list
+- Normalized Discounted Cumulative Gain: how much the correct recommended songs are up in the list. We define $rel_i = 1$ if the track with index $i$ is in the ground truth, otherwise $rel_i = 0$.
 $$
 NDCG = \frac{DCG}{IDCG} \\
 $$
-- where
 $$
-DCG=rel_1+\sum_{i=2}^{|R|} \frac{r e l_i}{\log _2 i} \quad \text{and} \quad IDC G=1+\sum_{i=2}^{|G \cap R|} \frac{1}{\log _2 i}
+DCG=rel_1+\sum_{i=2}^{|R|} \frac{r e l_i}{\log _2 i} \quad \text{and} \quad IDCG=1+\sum_{i=2}^{|G \cap R|} \frac{1}{\log _2 i}
 $$
 
 </v-clicks>
@@ -733,9 +857,10 @@ Evaluation on 1,000 playlists
 - User-Based CF
   - $Rprec = ?$, $NDCG = ?$
 - Item-Based CF:
-  - $Rprec = 0.0847$, $NDCG = 0.242$
+  - 10 Hash Tables: $Rprec = 0.0847$, $NDCG = 0.242$
+  - 20 Hash Tables: $Rprec = $, $NDCG = $
 - Denoising Autoencoder:
-  - $Rprec = 0.1315$, $NDCG = ?$
+  - $Rprec = 0.1327$, $NDCG = 0.334$
 
 Winners of the challenge:
 - $Rprec = 0.220$, $NDCG = 0.3858$
@@ -784,5 +909,3 @@ References
 </div>
 
 </div>
-
-
