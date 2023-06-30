@@ -852,7 +852,7 @@ Evaluation on 1,000 playlists
 <v-click>
 
 - User-Based CF
-  - $Rprec = 0.1242$, $NDCG = 0.3041$
+  - $Rprec = 0.1023$, $NDCG = 0.256$
 
 </v-click>
 
