@@ -33,6 +33,11 @@ title: <logos-spotify class="pr-120 w-2xl"/>
 <h1 class="text-gray-100">Million Playlist Challenge</h1>
 <p>by Domiziano Scarcelli - 1872664</p>
 
+<!-- 
+For this project I decided to try to implement some methods in order to solve the Spotify Million Playlist Challenge.  
+-->
+
+
 ---
 
 # Introduction
@@ -43,14 +48,18 @@ Recommender System for Playlist Continuation
 -   Hosted on AIcrowd
 -   More than 1000 submissions
 
-<v-clicks>
+<v-click>
 
 ## Dataset:
 
--   1 Million Playlists
--   63 Million total songs
--   2 Million unique songs
--   345K unique artists
+</v-click>
+
+<v-clicks>
+
+- 1 Million Playlists
+- 63 Million total songs
+- 2 Million unique songs
+- 345K unique artists
 
 </v-clicks>
 
@@ -63,8 +72,6 @@ A song recommender is an essential feature to enable an easy discoverability of 
 </v-clicks>
 
 <!--
-For this project I decided to try to implement some methods in order to solve the Spotify Million Playlist Challenge. 
-
 The challenge was hosted on *AIcrowd* in 2018, and since then there have been more than 1000 submission from many different teams.
 
 The challenge consists in taking a dataset of 1 Million playlists, with 63 million tracks, of which 2 million unique ones and more than 300K artists, and build a recommender system.
@@ -557,7 +564,6 @@ if $n = 3$, recommendations:
 | track_uri_4 | 0.1      |
 | track_uri_1 | 0.2      |
 | track_uri_2 | 0.35     |
-| track_uri_3 | 0.356    |
 
 The entire process takes about 30 to 60 seconds.
 
