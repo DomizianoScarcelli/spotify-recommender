@@ -67,14 +67,17 @@ Recommender System for Playlist Continuation
 
 Playlists created by users from 2010 to 2017
 
-A song recommender is an essential feature to enable an easy discoverability of new songs.
+Playlist continuation (and song recommendation in general) is an essential feature to enable an easy discoverability of new songs.
 
 </v-clicks>
 
 <!--
 The challenge was hosted on *AIcrowd* in 2018, and since then there have been more than 1000 submission from many different teams.
 
-The challenge consists in taking a dataset of 1 Million playlists, with 63 million tracks, of which 2 million unique ones and more than 300K artists, and build a recommender system.
+The challenge consists in taking a dataset of 1 Million playlists, with 63 million tracks, of which 2 million unique ones and more than 300K artists.
+
+The playlists were created by Spotify Users from 2010 and 2017.
+The purpose of the challenge is build a system that automatically continuates a playlist with relevant songs.
 -->
 
 ---
@@ -103,7 +106,9 @@ From here, build a distributed recommender system that given a playlist, it reco
 <!--
 Since I couldn't work with the full dataset because of hardware limitations, I sampled the 10% of it and worked with 100K playlists. The number of unique songs became around 680K with more than 100K artists.
 
-The aim of the project was to build different recommender systems using `pyspark`, and trying to keep the data as distributed as possibile, and see how the performances kept up with the most advances methods used by the winners of the challenge.
+In average there are 66 songs per playlist, and 38 unique artists per playlist.
+
+From here, I build a distributed system that continuates the playlist.
 -->
 
 ---
@@ -177,7 +182,7 @@ Top 15 most used words inside playlist titles
 </div>
 
 <!--
-From the histogram that describes the distribution of words used in the playlist titles, we can see that there are a lot of country playlists.
+Just for fun, we can also plot the distribution of words used in the playlist titles, and from this we can see that there are a lot of playlists that include the word "country" and "chill".
 -->
 
 ---
@@ -217,57 +222,59 @@ Let's now see which one are the developed systems.
 
 <v-click>
 
-```json {0-6|7-17|18-28|29-38|39-49}{maxHeight:'450px'}
+```json {0-6|7-18|19-29|30-39|40-50}{maxHeight:'450px'}
 {
     "info": {
         "generated_on": "2017-12-03 08:41:42.057563",
         "slice": "0-999",
         "version": "v1"
     },
-    "playlist": {
-        "name": "musical",
-        "collaborative": "false",
-        "pid": 5,
-        "modified_at": 1493424000,
-        "num_albums": 7,
-        "num_tracks": 12,
-        "num_followers": 1,
-        "num_edits": 2,
-        "duration_ms": 2657366,
-        "num_artists": 6,
-        "tracks": [
-            {
-                "pos": 0,
-                "artist_name": "Degiheugi",
-                "track_uri": "spotify:track:7vqa3sDmtEaVJ2gcvxtRID",
-                "artist_uri": "spotify:artist:3V2paBXEoZIAhfZRJmo2jL",
-                "track_name": "Finalement",
-                "album_uri": "spotify:album:2KrRMJ9z7Xjoz1Az4O6UML",
-                "duration_ms": 166264,
-                "album_name": "Dancing Chords and Fireflies"
-            },
-            {
-                "pos": 1,
-                "artist_name": "Degiheugi",
-                "track_uri": "spotify:track:23EOmJivOZ88WJPUbIPjh6",
-                "artist_uri": "spotify:artist:3V2paBXEoZIAhfZRJmo2jL",
-                "track_name": "Betty",
-                "album_uri": "spotify:album:3lUSlvjUoHNA8IkNTqURqd",
-                "duration_ms": 235534,
-                "album_name": "Endless Smile"
-            },
-            {
-                "pos": 2,
-                "artist_name": "Degiheugi",
-                "track_uri": "spotify:track:1vaffTCJxkyqeJY7zF9a55",
-                "artist_uri": "spotify:artist:3V2paBXEoZIAhfZRJmo2jL",
-                "track_name": "Some Beat in My Head",
-                "album_uri": "spotify:album:2KrRMJ9z7Xjoz1Az4O6UML",
-                "duration_ms": 268050,
-                "album_name": "Dancing Chords and Fireflies"
-            }
-        ]
-    }
+    "playlist": [
+        {
+            "name": "musical",
+            "collaborative": "false",
+            "pid": 5,
+            "modified_at": 1493424000,
+            "num_albums": 7,
+            "num_tracks": 12,
+            "num_followers": 1,
+            "num_edits": 2,
+            "duration_ms": 2657366,
+            "num_artists": 6,
+            "tracks": [
+                {
+                    "pos": 0,
+                    "artist_name": "Degiheugi",
+                    "track_uri": "spotify:track:7vqa3sDmtEaVJ2gcvxtRID",
+                    "artist_uri": "spotify:artist:3V2paBXEoZIAhfZRJmo2jL",
+                    "track_name": "Finalement",
+                    "album_uri": "spotify:album:2KrRMJ9z7Xjoz1Az4O6UML",
+                    "duration_ms": 166264,
+                    "album_name": "Dancing Chords and Fireflies"
+                },
+                {
+                    "pos": 1,
+                    "artist_name": "Degiheugi",
+                    "track_uri": "spotify:track:23EOmJivOZ88WJPUbIPjh6",
+                    "artist_uri": "spotify:artist:3V2paBXEoZIAhfZRJmo2jL",
+                    "track_name": "Betty",
+                    "album_uri": "spotify:album:3lUSlvjUoHNA8IkNTqURqd",
+                    "duration_ms": 235534,
+                    "album_name": "Endless Smile"
+                },
+                {
+                    "pos": 2,
+                    "artist_name": "Degiheugi",
+                    "track_uri": "spotify:track:1vaffTCJxkyqeJY7zF9a55",
+                    "artist_uri": "spotify:artist:3V2paBXEoZIAhfZRJmo2jL",
+                    "track_name": "Some Beat in My Head",
+                    "album_uri": "spotify:album:2KrRMJ9z7Xjoz1Az4O6UML",
+                    "duration_ms": 268050,
+                    "album_name": "Dancing Chords and Fireflies"
+                }
+            ]
+        }
+    ]
 }
 ```
 
@@ -291,7 +298,7 @@ How the playlists are encoded
 
 <v-clicks>
 
-1. Map each song in the playlist to a position.
+1. Map each song in the dataset to a position.
 
 | track_uri | pos |
 | --------- | --- |
@@ -304,7 +311,9 @@ How the playlists are encoded
 <!--
 The first method that I implemented is the user based collaborative filtering, and it works in this way.
 
-First I map each song in the entire dataset to a position. This will be useful in order to encode the playlist into a vector.
+First I map each song in the entire dataset to a position. 
+
+This will produce a dataframe like this, and  will be useful in order to encode the playlist into a vector.
 -->
 
 ---
@@ -313,7 +322,7 @@ First I map each song in the entire dataset to a position. This will be useful i
 
 <v-clicks>
 
--   $1$ in the $i$-th position, if the song at position $i$ is in the playlist;
+-   $1$ in the $i$-th position, if the song with position $i$ is in the playlist;
 -   $0$ otherwise.
 
 $$
@@ -369,14 +378,11 @@ The pipeline for the recommendation, given the `SparseVector` of a playlist that
 </v-click>
 
 <!--
-Once we have the SparseVector of the playlist that we want to continuate, the pipeline for generating the recommendation is the following:
+READ THE SLIDES
 
-First I compare the input playlist with each other playlist, computing the pairwise similarity using the Jaccard Similarity between the vectors. This will output a similarity value in 0,1. I use Jaccard Similarity because I don't need the information about the values, but just at which indexes the values are. 
+I use Jaccard Similarity because I don't need the information about the values, but just at which indexes the values are. 
 
-This operation will produce a dataframe like this.
-
-I then take the top-k vectors with the highest similarity value, where k is an hyperparameters, and aggregate the k vectors in order to have a single final vector. The aggregation works by averaging the vector weighting them by the relative similarity value, and then normalizing the value dividing them by the sum of similarity values.
-
+This operation will produce a dataframe like this..
 -->
 
 ---
@@ -417,14 +423,18 @@ $$n = 3 \quad \text{recommendations} = \{2: \color{green}1.0, \color{white}4: \c
 
 <v-click>
 
-7. Take the `song_uri` of the songs that are mapped into those indices to get the details.
+7. Take the `track_uri` of the songs that are mapped into those indices to get the details.
 
 The entire process takes about 30 seconds.
 </v-click>
 
 <!--
-Let 's say that, for k = 3, we have these three playlist vectors, with their relative similarity value. The aggregation will produce this result, and the normalization this final vector. 
-From this normalized aggregated vector, I remove the songs that already appear in the input playlist, and then I take the top-n indices with the highest values as the recommended songs. 
+READ THE SLIDES
+
+EXAMPLE:
+Let 's say that, for k = 3, we have these three playlist vectors, with their relative similarity value. The aggregation will be done by multiplying each element in the vector by its relative similarity value, and then summing the vectors together. 
+
+READ THE SLIDES
 
 So, if n = 3, we will have this final recommendation result. Of course then I can take the track_uri that corresponds to the positions in order to have all the songs details. This entire process takes about 30 seconds.
 -->
@@ -437,6 +447,9 @@ transition: slide-up
 
 Differently from User-Based CF, here the tracks are encoded instead of playlists.
 
+
+<v-clicks>
+
 Same principle:
 
 1. Map each playlist into a position.
@@ -446,6 +459,8 @@ Same principle:
 | pid_1 | 0   |
 | pid_2 | 1   |
 | pid_3 | 2   |
+
+</v-clicks>
 
 <!--
 The item-based collaborative filtering is the opposite approach to user-based, in which the similarity is made between songs, and not between playlists.
@@ -490,13 +505,14 @@ Given a playlist to continuate, represented as a `DataFrame` containing its song
 
 <v-click>
 
-1. Compute the $k$-nearest-neighbours for each track in the playlist. This will result in a collection of $T$ dataframes, where $|T|$ is the number of songs in the playlist. A dataframe relevant to the track $t$ has a list of $k$ songs, each one with the distance from $t$ in a separated column;
+1. Compute the $k$-nearest-neighbours for each track in the playlist. This will result in a collection of $T$ dataframes, where $|T|$ is the number of songs in the playlist.
+(because for each song I generate a Dataframe for the neighbourhood)
 
 </v-click>
 
 <v-click>
 
-2. Aggregate each Dataframe $\in T$ in order to have a single dataframe.
+1. Aggregate each Dataframe $\in T$ in order to have a single dataframe.
    Since we are sure that the size of $T$ is not big, I first convert the dataframes into python dictionaries
 
 ```python
@@ -507,13 +523,12 @@ Given a playlist to continuate, represented as a `DataFrame` containing its song
 
 </v-click>
 
-<!-- Let's see how do we generate a list of recommendation.
+<!--
+Let's see how do we generate a list of recommendation.
 
-First we need the playlist to continuate, that in this case will be represented as a DataFrame containing the vectors of the songs it contains. Then the recommendation pipeline is the following:
-
-- I first compute the k-nearest-neighbours for each track in the playlist. This will result in a collection of T dataframe, where the cardinality of T is the number of songs in the playlist. Each dataframe t in T has the k-neighbours of a singular track, and each neighbour has a distance from that track.
-- I then aggreagate each dataframe in T in order to obtain a single dataframe. Now, since we are sure that the size of T is not big, I first convert the dataframes into python dictionaries with this structure. So we have a mapping between the track_uri and its distance from the relative track.
+READ THE SLIDES
 -->
+
 ---
 transition: slide-up
 ---
@@ -538,16 +553,11 @@ The aggregation produce a python dictionary like this:
 | track_uri_3 | 0.356    |
 | track_uri_4 | 0.1      |
 
-<!-- 
+<!--
+The aggregation works in the following way:
 
-- The aggreagation works in the following way: for each track_uri in all the dataframes in T, i put it as key of the dictionary, and I insert as values a list of all the distances that are mapped with that track. 
-
-- Then I convert back the dictionary into a pyspark dataframe, averaging the values inside of each list.
-
-- As before, i have to remove from this dataframe the songs that already are in the playlist, then I order the dataframe by ascending distances, and take the top-n tracks as recommendations.
-
-This entire process takes about 30 to 60 seconds.
- -->
+I map to each track_uri that appears in the collection, the list distances mapped to that specific track_uri.
+-->
 
 ---
 
@@ -570,22 +580,37 @@ The entire process takes about 30 to 60 seconds.
 </v-clicks>
 
 <!--
-Before performing the recommendation, we remove from the dataset the songs that already appear inside of the input playlist, in order to not recommend them.
+Before performing the recommendation, I remove from the dataset the songs that already appear inside of the input playlist, in order to not recommend them.
 
-We recommend the $n$ tracks by ordering the dataframe in ascending order by distance, and taking the top-$n$ tracks with the lowest distance.
+I then order the dataframe in ascending order by distance, and taking the top-$n$ tracks with the lowest distance as recommendations.
 -->
 
 ---
 
 ## K-Neighbours with LSH
 
-<v-clicks>
+
+<v-click>
 
 -   Precise $k$-neighbours search is too expensive
+
+</v-click>
+
+<v-click>
+
 -   _Locally Sensitive Hashing_ with pyspark's `MinHashLSH` class.
+
+</v-click>
+
+<v-click>
+
 -   Number of hash tables $= 20$
     -   Higher: more precise, less fast
     -   Lower: less precise, faster
+
+</v-click>
+
+<v-clicks>
 
 We can pre-compute the entire set of $k$-nearest neighbour to be even faster.
 
@@ -593,13 +618,13 @@ This takes a long time, but has to be done just once.
 </v-clicks>
 
 <!--
-When computing the k-neighbours search for each song in the playlist, this could be very expensive, the more songs are in the playlist. 
+When computing the k-neighbours search for each song in the playlist, this could be very expensive, especially if the playlist contains a lot of songs. 
 
-For this I decided to not compute the exact neighbour search, but to use an approximation algoritmh using the Locally Sensitive Hasing with pyspark MinHashLSH class, which uses Jaccard Distance under the hood.
+For this I decided to implement an approximate neighbour search using a Locally Sensitive Hashing algorithm using pyspark's MinHashLSH class, which uses Jaccard Distance under the hood.
 
 I had to set an hyperparamters that controls the number of hash tables to use. The higher the number, the more precise the algorithm, but the less fast; the lower, the less precise but the faster. I tried with both 10 and 20 hash tables.
 
-In order to be very-fast at inference time, we can pre-compute the entire set of k-nearest neigbhours.
+We can pre-compute the entire set of k-nearest neighbors to be even faster.
 -->
 
 ---
@@ -613,7 +638,7 @@ Solution taken by the "Hello World" team, which classified in 2nd place in the c
 
 <v-clicks>
 
--   Denoising Autoencoder that takes Tracks and Artits
+-   Denoising Autoencoder that takes Tracks and Artists
 -   Character level CNN that takes playlist's Title.
 -   Ensable to make a prediction.
 
@@ -622,9 +647,11 @@ For simplicity, I consider just the Denoising Autoencoder model.
 </v-clicks>
 
 <!--
-Regarding the final approach, I decided to take the solution written by the 2nd place team in the challenge. They implemented a recommender system that includes a denoising autoencoder that takes in input the tracks and the artists of a playlist, then a character level cnn that takes the playlist's title in input, and the overall model is just an ensamble of the twos.
+Regarding the final approach, I take the solution of the Hello World team, which classified in second place in the official challenge.
 
-For simplicity, I just considered the Denoising autoencoder model. 
+They implemented a recommender system that includes a denoising autoencoder that takes in input the tracks and the artists of a playlist, then a character level cnn that takes the playlist's title in input, and the overall model is just an ensamble of the twos.
+
+For simplicity, I just considered the Denoising autoencoder model.
 -->
 
 ---
@@ -692,13 +719,12 @@ Dropout with probability $p$ that a node is kept in the network sampled between 
 
 <!--
 In order to let the model generalize and not reconstruct exactly the same input, we add some noise to the input vector.
-To generate this noise, at training time a technique called Hide & Seek is used, in which at each iteration and at random, one of the two vectors in the concatenation is maskes, meaning all its values are put to zero. 
+To generate this noise, at training time the authors of the paper used a technique called Hide & Seek is used, in which at each iteration and at random, one of the two vectors in the concatenation is maskes, meaning all its values are put to zero. 
 
 So let's say this is the input, each time we can mask the songs, or mask the artists. In this way the model has to learn inter-relationship between artists and tracks to reconstruct the vector.
 
 Another regularization technique is dropout, with a probability p of a node staying in the network sampled between the interval 0.5, 0.8. This allows the model to learn intra-relationship between tracks and between artists.
 -->
-
 
 ---
 transition: slide-up
@@ -836,6 +862,7 @@ In this way we can use the playlists in the train-set to generate the list of re
 ---
 transition: slide-up
 ---
+
 ## Neural Network Based
 
 Create 3 `DataFrames`: Train, Validation, Test
@@ -849,6 +876,10 @@ Original `DataFrame`
 | 2   | indices=3,5,6,8,9,10        |
 | 3   | indices=1,2,5,8,10,11       |
 | 4   | indices=0,1,5,8,11,21,34,53 |
+
+<!--
+For what concerns the model with training, we need three different dataframes, for Training, Validation and Testing, without common playlist among them.
+-->
 
 ---
 
@@ -908,13 +939,9 @@ No need to further split the Training set.
 </v-clicks>
 
 <!--
-
-For what concerns the model with training, we need three different dataframes, for Training, Validation and Testing, without common playlist among them.
-
 So let's say this is the original dataframe, the split now happens at row level, which will produce three different dataframes.
 
-Then, since I have to compute evaluation metrics on the validation and test set, I also have to split them but at track level. 
-
+Then, since I have to compute evaluation metrics on the validation and test set, I also have to split them but at track level.
 -->
 
 ---
@@ -1013,6 +1040,7 @@ I also built a little web app that demonstrates the use of the application by a 
 ---
 css: windicss
 ---
+
 # Web Application Demo
 
 <div class="flex justify-center">
@@ -1020,6 +1048,12 @@ css: windicss
         <source src='/videos/demo.mp4' type="video/mp4">
     </video>
 </div>
+
+<!--
+In the sidebar the user can search for songs to create a playlist. Here we can see that I'm adding some hip hop songs. Then the user can see the playlist they created, remove some songs if they want, and click generate to continuate the playlist.
+
+Once the songs are generated, we can notice that the songs are mostly by hip-hop artists, as they include some artists that are also in the playlist songs, and other artists that were not included in the original playlist.
+-->
 
 ---
 css: windicss
@@ -1043,10 +1077,15 @@ References
 <a href="https://www.aicrowd.com/challenges/spotify-million-playlist-dataset-challenge">AIcrowd Spotify Million Playlist Challenge.</a>
 </li>
 <li>
-<a href="url">hello world! [Yang et al.]</a>
+<a href="[https://hojinyang.github.io/papers/MMCF18.pdf]">MMCF: Multimodal Collaborative Filtering for Automatic
+Playlist Continuation</a>
 </li>
 </ul>
 
 </div>
 
 </div>
+
+<!--
+That's it, thank you for the attention.
+-->
