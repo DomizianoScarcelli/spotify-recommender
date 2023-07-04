@@ -11,7 +11,7 @@ There is also a re-implementation of the [MMCF: Multimodal Collaborative Filteri
 The folder structure is the following:
 
 -   `core`: contains the notebooks and other files that constitute the core algorithms that implement the recommender systems;
--   `slides`: contains the source code for the [presentation] made using [Slidev](https://github.com/slidevjs/slidev).
+-   `slides`: contains the source code for the [presentation](https://github.com/DomizianoScarcelli/spotify-recommender/blob/master/slides/slides-export.pdf) made using [Slidev](https://github.com/slidevjs/slidev).
 -   `webapp`: contains the code for a demo app built with Vite + React + FastAPI that showcase the usage of the system;
 
 ## Demo of the web app
