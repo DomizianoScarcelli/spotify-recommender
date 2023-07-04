@@ -16,5 +16,7 @@ The fold structure is the following:
 
 ## Demo of the web app
 
-https://github.com/DomizianoScarcelli/spotify-recommender-3/assets/44399141/c6d39cf0-2fa0-435c-b4b5-920e45d94787
+https://github.com/DomizianoScarcelli/spotify-recommender/assets/44399141/f4959128-7e2b-4f57-a8a5-e0e82a28286c
+
+
 
