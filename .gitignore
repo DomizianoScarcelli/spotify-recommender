@@ -10,3 +10,9 @@ components.d.ts
 audio_features
 data/
 node_modules/
+.DS_Store
+__pycache__
+data
+database
+pyspark_data
+

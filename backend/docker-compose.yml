@@ -1,0 +1,42 @@
+version: 2.18.1
+services:
+    bigdata:
+        container_name: bigdata_server
+        build:
+            context: .
+            dockerfile: Dockerfile
+        environment:
+            JAVA_HOME: /usr/lib/jvm/java-17-openjdk-arm64
+            DATABASE_URL: mongodb://mongodb:27017
+        env_file:
+            - ./.env
+        ports:
+            - 3004:3004
+        depends_on:
+            - mongodb
+        volumes:
+            - ./app:/code/app
+    mongodb:
+        image: mongo
+        container_name: mongodb
+        ports:
+            - 27017:27017
+        volumes:
+            - ./data:/data/db
+        environment:
+            - MONGO_INITDB_ROOT_USERNAME=admin
+            - MONGO_INITDB_ROOT_PASSWORD=password
+    minio:
+        image: minio/minio
+        container_name: minio
+        volumes:
+            - minio-data:/data
+        ports:
+            - 9002:9002
+            - 9092:9092
+        command: server /data --address :9002 --console-address :9092
+        environment:
+            - "MINIO_ROOT_USER=root"
+            - "MINIO_ROOT_PASSWORD=root12345"
+volumes:
+    minio-data:
