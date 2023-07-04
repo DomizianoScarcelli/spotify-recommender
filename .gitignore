@@ -7,3 +7,6 @@ index.html
 .remote-assets
 components.d.ts
 .vscode
+audio_features
+data/
+node_modules/
