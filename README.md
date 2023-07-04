@@ -6,9 +6,9 @@ The project involves implementing 3 different techniques to solve the Spotify Mi
 
 The methods are implemented using Pyspark in order for the data to work on a distributed system.
 
-There is also a re-implementation of the [MMCF: Multimodal Collaborative Filtering for Automatic Playlist Continuation](https://github.com/hojinYang/spotify_recSys_challenge_2018) by the "Hello World" team that classified in 2nd place in the challenge. The re-implementation consists in converting the Neural Network from Tensorflow v1 to PyTorch, and using [Petastorm](https://github.com/uber/petastorm) to create a PyTorch DataLoader from a pyspark DataFrame in order to keep the data distributed.
+There is also a re-implementation of the [MMCF: Multimodal Collaborative Filtering for Automatic Playlist Continuation](https://github.com/hojinYang/spotify_recSys_challenge_2018) by the "Hello World" team that classified in 2nd place in the challenge. The re-implementation consists in converting the Neural Network from Tensorflow v1 to PyTorch, and using [Petastorm](https://github.com/uber/petastorm) to create a PyTorch DataLoader from a Pyspark DataFrame in order to keep the data distributed.
 
-The fold structure is the following:
+The folder structure is the following:
 
 -   `core`: contains the notebooks and other files that constitute the core algorithms that implement the recommender systems;
 -   `slides`: contains the source code for the [presentation] made using [Slidev](https://github.com/slidevjs/slidev).
