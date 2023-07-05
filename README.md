@@ -19,4 +19,5 @@ The folder structure is the following:
 https://github.com/DomizianoScarcelli/spotify-recommender/assets/44399141/f4959128-7e2b-4f57-a8a5-e0e82a28286c
 
 
-
+### Tech Stack
+Python • PySpark • PyTorch • Petastorm • Typescript • MinIO • React • Tailwind • FastAPI • Vite • Slidev
