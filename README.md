@@ -20,4 +20,4 @@ https://github.com/DomizianoScarcelli/spotify-recommender/assets/44399141/f49591
 
 
 ### Tech Stack
-Python • PySpark • PyTorch • Petastorm • Typescript • MinIO • React • Tailwind • FastAPI • Vite • MongoDB • Slidev
+Python • PySpark • PyTorch • Petastorm • Typescript • MinIO • React • Tailwind • FastAPI • Vite • MongoDB • Docker • Slidev
